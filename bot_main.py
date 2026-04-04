@@ -12,7 +12,7 @@ from aiogram.types import Message, BufferedInputFile
 # Módulos del Sistema (Pipeline ETL Inverso)
 from ocr_engine import OCRProcessor
 from logic_mapper import preparar_para_db
-from database_manager import insertar_factura, init_db
+from database_manager import insertar_factura, init_db, registrar_evento
 from excel_exporter import obtener_excel_buffer
 
 # Configuración de Logging
@@ -28,6 +28,9 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 if not BOT_TOKEN:
     raise ValueError("⚠️ No se encontró la variable BOT_TOKEN en el archivo .env. Por favor arréglalo.")
+
+AUTHORIZED_USERS_STR = os.getenv("AUTHORIZED_USERS", "")
+ALLOWED_USERS = [int(u.strip()) for u in AUTHORIZED_USERS_STR.split(",") if u.strip().isdigit()]
 
 # Inicializar Base de Datos (Seguridad de arranque)
 logger.info("Verificando integridad de Base de Datos...")
@@ -58,6 +61,10 @@ async def cmd_start(message: Message):
 
 @dp.message(Command("excel"))
 async def cmd_excel(message: Message):
+    user_id = message.from_user.id
+    if ALLOWED_USERS and user_id not in ALLOWED_USERS:
+        return
+
     logger.info(f"Usuario {message.from_user.id} ha solicitado un reporte Excel de facturación.")
     status_msg = await message.answer("🛠 Generando reporte contable. Un momento por favor...")
     
@@ -69,11 +76,22 @@ async def cmd_excel(message: Message):
         document = BufferedInputFile(buffer.read(), filename="reporte_contable_sii.xlsx")
         await message.answer_document(document, caption="📊 Aquí tienes el informe estructurado con todos los tickets registrados.")
         await status_msg.delete()
+        await asyncio.to_thread(registrar_evento, user_id, message.from_user.username or "Desconocido", "GENERACION_EXCEL", "EXITO")
     else:
         await status_msg.edit_text("⚠️ No se pudo generar. Es posible que aún no hayas registrado ninguna factura o base vacía.")
+        await asyncio.to_thread(registrar_evento, user_id, message.from_user.username or "Desconocido", "GENERACION_EXCEL", "ERROR_BASE_VACIA")
 
 @dp.message(F.photo)
 async def handle_photo(message: Message):
+    user_id = message.from_user.id
+    username = message.from_user.username or "Desconocido"
+
+    if ALLOWED_USERS and user_id not in ALLOWED_USERS:
+        return
+
+    # Registrar inicio de acción
+    await asyncio.to_thread(registrar_evento, user_id, username, "RECEPCION_IMAGEN", "PENDIENTE")
+
     photo = message.photo[-1]
     file_id = photo.file_id
     
@@ -95,6 +113,13 @@ async def handle_photo(message: Message):
             end_time = time.perf_counter()
             logger.info(f"Rendimiento OCR: Inferencia completada en {end_time - start_time:.4f} segundos.")
             
+            # Validación de Extracción
+            if not ocr_result_crudo or not ocr_result_crudo.get('total'):
+                await asyncio.to_thread(registrar_evento, user_id, username, "PROCESO_OCR", "IMAGEN_INVALIDA")
+                await reply_msg.edit_text("No he podido reconocer esta imagen como una factura válida. Asegúrate de que se vea bien el CIF y el importe total.")
+                return
+
+            await asyncio.to_thread(registrar_evento, user_id, username, "PROCESO_OCR", "OCR_EXITOSO")
             await reply_msg.edit_text("🧩 Procesamiento Visual exitoso. Adaptando al modelo relacional SQL...")
             
             # Fase 3: Adaptation & Mapping (Anti-Corruption Layer)
@@ -104,8 +129,8 @@ async def handle_photo(message: Message):
             inserted_id = await asyncio.to_thread(insertar_factura, mapped_data)
             
             if inserted_id != -1:
-                has_warning = mapped_data.get('ComentarioSII') == 'REVISAR: Error de cuadre aritmético'
-                warning_text = "\n\n⚠️ Factura registrada, pero los importes no cuadran perfectamente. Por favor, revísala en el Excel." if has_warning else ""
+                has_warning = mapped_data.get('ComentarioSII') == 'REVISAR: Error de suma'
+                warning_text = "\n\n⚠️ Los datos se han guardado, pero detecto una posible discrepancia en los totales. Revísalo en el reporte." if has_warning else ""
                 
                 await reply_msg.edit_text(
                     f"✅ **¡Documento Contable Registrado!**\n\n"
@@ -115,14 +140,17 @@ async def handle_photo(message: Message):
                     f"{warning_text}\n\n"
                     "Para revisar todos los mapeos, ejecuta /excel"
                 )
+                await asyncio.to_thread(registrar_evento, user_id, username, "INSERCION_DB", "EXITO")
             else:
                 await reply_msg.edit_text("❌ Disculpa. Hubo un error de constraints de persistencia a nivel SQLite.")
+                await asyncio.to_thread(registrar_evento, user_id, username, "INSERCION_DB", "ERROR_SQLITE")
         finally:
             if os.path.exists(filepath):
                 os.remove(filepath)
                 logger.info(f"Basura Temporal Limpiada: Archivo {filepath} purgado.")
             
     except Exception as e:
+        await asyncio.to_thread(registrar_evento, user_id, username, "PROCESO_GLOBAL", "ERROR_SISTEMA")
         logger.error(f"Falla Sistémica Atendiendo Fotografía: {e}")
         await message.answer("⚠️ Fallo crítico irrecuperable procesando el ticket.")
 
