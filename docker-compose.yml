@@ -1,0 +1,13 @@
+services:
+  bot_facturas:
+    build: .
+    container_name: erp_facturador_bot
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      # PERSISTENCIA ESTRUCTURADA: La base de datos vive en tu host y se mapea al contenedor.
+      - ./facturas.db:/app/facturas.db
+      # PERSISTENCIA DE ARCHIVOS (DATASET): Las imágenes descargadas por el bot se quedan en tu carpeta local.
+      - ./temp_tickets:/app/temp_tickets
+    # Si usaras el modo real con GPU, aquí añadiríamos la configuración de deploy para reservar la GPU.
