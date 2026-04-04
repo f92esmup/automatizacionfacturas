@@ -1,6 +1,7 @@
 import os
 import logging
 import asyncio
+import time
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -85,35 +86,41 @@ async def handle_photo(message: Message):
         file = await bot.get_file(file_id)
         await bot.download_file(file.file_path, filepath)
         
-        reply_msg = await message.answer("🔄 Ticket almacenado. Inicializando Arquitectura KIE/OCR...")
-        
-        # Fase 2: Inferencia de Machine Learning (Aislada del Event Loop Async)
-        # Esto es vital para no freezar el bot del resto de usuarios durante el pesado DocVQA
-        ocr_result_crudo = await asyncio.to_thread(ocr_processor.procesar_ticket, filepath)
-        
-        await reply_msg.edit_text("🧩 Procesamiento Visual exitoso. Adaptando al modelo relacional SQL...")
-        
-        # Fase 3: Adaptation & Mapping (Anti-Corruption Layer)
-        mapped_data = preparar_para_db(ocr_result_crudo)
-        
-        # Fase 4: Persistencia y Grabado Transaccional (Off-loaded)
-        inserted_id = await asyncio.to_thread(insertar_factura, mapped_data)
-        
-        # Opcional: Garbagge Collection (Borrar foto de disco)
-        if os.path.exists(filepath):
-            os.remove(filepath)
-            logger.info(f"Basura Temporal Limpiada: Archivo {filepath} purgado.")
-        
-        if inserted_id != -1:
-            await reply_msg.edit_text(
-                f"✅ **¡Documento Contable Registrado!**\n\n"
-                f"👤 Proveedor: {mapped_data.get('Proveedor')}\n"
-                f"🆔 CLAVE INTERNA: #{inserted_id}\n"
-                f"💶 Importe Reconocido: {mapped_data.get('ImporteFactura')}€\n\n"
-                "Para revisar todos los mapeos, ejecuta /excel"
-            )
-        else:
-            await reply_msg.edit_text("❌ Disculpa. Hubo un error de constraints de persistencia a nivel SQLite.")
+        try:
+            reply_msg = await message.answer("🔄 Ticket almacenado. Inicializando Arquitectura KIE/OCR...")
+            
+            # Fase 2: Inferencia de Machine Learning (Aislada del Event Loop Async)
+            start_time = time.perf_counter()
+            ocr_result_crudo = await asyncio.to_thread(ocr_processor.procesar_ticket, filepath)
+            end_time = time.perf_counter()
+            logger.info(f"Rendimiento OCR: Inferencia completada en {end_time - start_time:.4f} segundos.")
+            
+            await reply_msg.edit_text("🧩 Procesamiento Visual exitoso. Adaptando al modelo relacional SQL...")
+            
+            # Fase 3: Adaptation & Mapping (Anti-Corruption Layer)
+            mapped_data = preparar_para_db(ocr_result_crudo)
+            
+            # Fase 4: Persistencia y Grabado Transaccional (Off-loaded)
+            inserted_id = await asyncio.to_thread(insertar_factura, mapped_data)
+            
+            if inserted_id != -1:
+                has_warning = mapped_data.get('ComentarioSII') == 'REVISAR: Error de cuadre aritmético'
+                warning_text = "\n\n⚠️ Factura registrada, pero los importes no cuadran perfectamente. Por favor, revísala en el Excel." if has_warning else ""
+                
+                await reply_msg.edit_text(
+                    f"✅ **¡Documento Contable Registrado!**\n\n"
+                    f"👤 Proveedor: {mapped_data.get('Proveedor')}\n"
+                    f"🆔 CLAVE INTERNA: #{inserted_id}\n"
+                    f"💶 Importe Reconocido: {mapped_data.get('ImporteFactura')}€"
+                    f"{warning_text}\n\n"
+                    "Para revisar todos los mapeos, ejecuta /excel"
+                )
+            else:
+                await reply_msg.edit_text("❌ Disculpa. Hubo un error de constraints de persistencia a nivel SQLite.")
+        finally:
+            if os.path.exists(filepath):
+                os.remove(filepath)
+                logger.info(f"Basura Temporal Limpiada: Archivo {filepath} purgado.")
             
     except Exception as e:
         logger.error(f"Falla Sistémica Atendiendo Fotografía: {e}")
