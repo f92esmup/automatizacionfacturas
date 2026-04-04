@@ -2,6 +2,7 @@ import time
 import logging
 from datetime import datetime
 from typing import Dict, Any
+import re
 
 # Configuración básica del logger
 logger = logging.getLogger(__name__)
@@ -23,7 +24,7 @@ PROVINCIAS_MAP = {
 }
 
 def limpiar_cif(cif_crudo: str) -> str:
-    cif = str(cif_crudo).replace(" ", "").replace("-", "").replace(".", "").upper()
+    cif = re.sub(r'[^A-Z0-9]', '', str(cif_crudo).upper())
     if len(cif) == 9:
         if cif[0] == 'O':
             cif = '0' + cif[1:]
@@ -141,7 +142,7 @@ def preparar_para_db(ocr_data: Dict[str, Any]) -> Dict[str, Any]:
         suma_total_calculada += mapped[f"BaseImponible{i}"] + mapped[f"CuotaIva{i}"]
     
     if abs(suma_total_calculada - mapped['ImporteFactura']) > 0.01:
-        mapped['ComentarioSII'] = 'REVISAR: Error de cuadre aritmético'
+        mapped['ComentarioSII'] = 'REVISAR: Error de suma'
 
     return mapped
 

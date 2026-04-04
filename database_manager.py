@@ -82,6 +82,17 @@ def init_db(db_name: str = "facturas.db") -> None:
             CodDepartamento TEXT NULL
         )
     ''')
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS logs_actividad (
+            id_log INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_usuario INTEGER NOT NULL,
+            nombre_usuario TEXT,
+            fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            accion TEXT NOT NULL,
+            resultado TEXT NOT NULL
+        )
+    ''')
 
     conn.commit()
     conn.close()
@@ -117,6 +128,23 @@ def insertar_factura(datos_dict: Dict[str, Any], db_name: str = "facturas.db") -
         logging.error(f"Error en BD durante inserción de factura: {e}")
         conn.rollback()
         return -1
+    finally:
+        conn.close()
+
+def registrar_evento(id_usuario: int, nombre_usuario: str, accion: str, resultado: str, db_name: str = "facturas.db") -> None:
+    """
+    Registra un evento de auditoría en la tabla logs_actividad.
+    """
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    try:
+        cursor.execute('''
+            INSERT INTO logs_actividad (id_usuario, nombre_usuario, accion, resultado)
+            VALUES (?, ?, ?, ?)
+        ''', (id_usuario, nombre_usuario, accion, resultado))
+        conn.commit()
+    except sqlite3.Error as e:
+        logging.error(f"Error registrando evento de log: {e}")
     finally:
         conn.close()
 
