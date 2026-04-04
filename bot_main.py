@@ -145,9 +145,11 @@ async def handle_photo(message: Message):
                 await reply_msg.edit_text("❌ Disculpa. Hubo un error de constraints de persistencia a nivel SQLite.")
                 await asyncio.to_thread(registrar_evento, user_id, username, "INSERCION_DB", "ERROR_SQLITE")
         finally:
-            if os.path.exists(filepath):
-                os.remove(filepath)
-                logger.info(f"Basura Temporal Limpiada: Archivo {filepath} purgado.")
+            # if os.path.exists(filepath):
+            #     os.remove(filepath)
+            #     logger.info(f"Basura Temporal Limpiada: Archivo {filepath} purgado.")
+            
+            logger.info(f"Archivo Conservado (Dataset IA): {filepath} no eliminado por solicitud de entrenamiento.")
             
     except Exception as e:
         await asyncio.to_thread(registrar_evento, user_id, username, "PROCESO_GLOBAL", "ERROR_SISTEMA")
