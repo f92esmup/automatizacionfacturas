@@ -234,6 +234,17 @@ async def handle_photo(message: Message):
         await asyncio.to_thread(registrar_evento, user_id, username, "PROCESO_OCR", "OCR_EXITOSO")
         await reply_msg.edit_text("🧩 OCR exitoso. Guardando en base de datos...")
 
+        # ── Bloqueo MOCK: no contaminar la BD con datos simulados ──
+        if ocr_processor.mode == "MOCK":
+            await reply_msg.edit_text(
+                "⚙️ *Modelo OCR no disponible aún*\n\n"
+                "El bot está en modo simulación porque el modelo Donut todavía no ha sido entrenado.\n\n"
+                "La imagen ha sido recibida correctamente pero *no se registrará* en la base de datos "
+                "hasta que el modelo esté disponible.",
+                parse_mode="Markdown"
+            )
+            return
+
         # ── Mapping y persistencia automática ──
         ocr_raw["hash_archivo"] = hash_img
         mapped = preparar_para_db(ocr_raw)

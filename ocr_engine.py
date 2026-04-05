@@ -1,6 +1,7 @@
 import os
 import re
 import logging
+from pathlib import Path
 from typing import Dict, Any, List
 from dotenv import load_dotenv
 
@@ -28,23 +29,34 @@ class OCRProcessor:
 
     def __init__(self):
         self.mode = OCR_MODE
-        
+        self.model_id = "./donut_facturas_model"
+
         if self.mode != "MOCK":
-            self.device = "cuda" if torch.cuda.is_available() else "cpu"
-            logger.info(f"Entorno OCR Real activado. Dispositivo de cálculo: {self.device}")
-            
-            # CAMBIO: Ruta a tu modelo entrenado localmente
-            self.model_id = "./donut_facturas_model" 
-            
-            try:
-                logger.info(f"Cargando modelo PERSONALIZADO desde {self.model_id}...")
-                self.processor = DonutProcessor.from_pretrained(self.model_id)
-                self.model = VisionEncoderDecoderModel.from_pretrained(self.model_id).to(self.device)
-                self.model.eval()
-                logger.info("Modelo personalizado cargado con éxito en memoria.")
-            except Exception as e:
-                logger.error(f"Fallo crítico al cargar modelo local: {e}. Revirtiendo a MOCK.")
+            # ── Verificar que el modelo existe antes de intentar cargarlo ──
+            model_path = Path(self.model_id)
+            if not model_path.exists() or not any(model_path.iterdir()):
+                logger.warning(
+                    "⚠️  OCR_MODE=REAL pero no se encontró el modelo en '%s'. "
+                    "El bot arranca en modo MOCK hasta que entrenes y guardes el modelo. "
+                    "Las imágenes recibidas NO se registrarán en la base de datos.",
+                    self.model_id
+                )
                 self.mode = "MOCK"
+            else:
+                self.device = "cuda" if torch.cuda.is_available() else "cpu"
+                logger.info(f"Entorno OCR Real activado. Dispositivo de cálculo: {self.device}")
+                try:
+                    logger.info(f"Cargando modelo PERSONALIZADO desde {self.model_id}...")
+                    self.processor = DonutProcessor.from_pretrained(self.model_id)
+                    self.model = VisionEncoderDecoderModel.from_pretrained(self.model_id).to(self.device)
+                    self.model.eval()
+                    logger.info("Modelo personalizado cargado con éxito en memoria.")
+                except Exception as e:
+                    logger.error(
+                        f"Fallo crítico al cargar el modelo desde '{self.model_id}': {e}. "
+                        "Revirtiendo a MOCK — la BD no será modificada."
+                    )
+                    self.mode = "MOCK"
         else:
             logger.info("Iniciando clase OCRProcessor en modo simulación (MOCK).")
 
