@@ -111,43 +111,29 @@ def archivo_ya_en_dataset(nombre_archivo: str) -> bool:
 
 def construir_ground_truth(datos: Dict[str, Any]) -> str:
     """
-    Genera la cadena XML que Donut usa como etiqueta de entrenamiento.
+    Genera el ground truth en formato JSON con wrapper 'gt_parse' que Donut espera.
 
-    Formato:
-    <s_factura>
-      <s_cif>B12345678</s_cif>
-      <s_proveedor>Nombre S.L.</s_proveedor>
-      <s_fecha>2024-03-15</s_fecha>
-      <s_total>1210.00</s_total>
-      <s_impuestos>
-        <s_tramo>
-          <s_base>1000.00</s_base>
-          <s_pct_iva>21.0</s_pct_iva>
-          <s_cuota_iva>210.00</s_cuota_iva>
-        </s_tramo>
-      </s_impuestos>
-    </s_factura>
+    Formato del campo ground_truth en metadata.jsonl:
+    "{\"gt_parse\": {\"cif\": \"B12345678\", \"proveedor\": \"...\", \"fecha\": \"...\",
+                     \"total\": 121.00, \"impuestos\": [{...}]}}"
     """
-    tramos_xml = ""
-    for imp in datos.get("impuestos", []):
-        tramos_xml += (
-            f"<s_tramo>"
-            f"<s_base>{imp['base_imponible']:.2f}</s_base>"
-            f"<s_pct_iva>{imp['porcentaje_iva']:.1f}</s_pct_iva>"
-            f"<s_cuota_iva>{imp['cuota_iva']:.2f}</s_cuota_iva>"
-            f"</s_tramo>"
-        )
-
-    gt = (
-        f"<s_factura>"
-        f"<s_cif>{datos.get('cif_proveedor', '')}</s_cif>"
-        f"<s_proveedor>{datos.get('proveedor_nombre', '')}</s_proveedor>"
-        f"<s_fecha>{datos.get('fecha_expedicion', '')}</s_fecha>"
-        f"<s_total>{datos.get('importe_total', 0):.2f}</s_total>"
-        f"<s_impuestos>{tramos_xml}</s_impuestos>"
-        f"</s_factura>"
-    )
-    return gt
+    gt_dict = {
+        "gt_parse": {
+            "cif":       datos.get("cif_proveedor", ""),
+            "proveedor": datos.get("proveedor_nombre", ""),
+            "fecha":     datos.get("fecha_expedicion", ""),
+            "total":     round(datos.get("importe_total", 0.0), 2),
+            "impuestos": [
+                {
+                    "base":     round(imp["base_imponible"], 2),
+                    "pct_iva":  round(imp["porcentaje_iva"], 1),
+                    "cuota_iva": round(imp["cuota_iva"], 2),
+                }
+                for imp in datos.get("impuestos", [])
+            ],
+        }
+    }
+    return json.dumps(gt_dict, ensure_ascii=False)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
