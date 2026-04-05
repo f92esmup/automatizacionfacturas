@@ -12,7 +12,7 @@ from aiogram.types import Message, BufferedInputFile
 # Módulos del Sistema (Pipeline ETL Inverso)
 from ocr_engine import OCRProcessor
 from logic_mapper import preparar_para_db
-from database_manager import insertar_factura, init_db, registrar_evento
+from database_manager import insertar_factura, init_db, registrar_evento, existe_hash_imagen
 from excel_exporter import obtener_excel_buffer
 
 # Configuración de Logging
@@ -46,6 +46,15 @@ TEMP_DIR = "temp_tickets"
 # Inicializar Bot y Dispatcher
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
+
+import hashlib
+
+def calcular_hash_imagen(filepath: str) -> str:
+    hasher = hashlib.sha256()
+    with open(filepath, 'rb') as f:
+        buf = f.read()
+        hasher.update(buf)
+    return hasher.hexdigest()
 
 @dp.message(CommandStart())
 async def cmd_start(message: Message):
@@ -103,6 +112,15 @@ async def handle_photo(message: Message):
         # Fase 1: Extracción del Archivo Físico
         file = await bot.get_file(file_id)
         await bot.download_file(file.file_path, filepath)
+
+        # Calcular hash de la imagen para prevenir procesamientos paralelos duplicados
+        hash_img = await asyncio.to_thread(calcular_hash_imagen, filepath)
+        is_dupe = await asyncio.to_thread(existe_hash_imagen, hash_img)
+        
+        if is_dupe:
+            await asyncio.to_thread(registrar_evento, user_id, username, "PROCESO_OCR", "RECHAZADO_DUPLICADO")
+            await message.answer("⚠️ Este ticket o comprobante ya ha sido registrado previamente.\nOperación cancelada por seguridad.")
+            return
         
         try:
             reply_msg = await message.answer("🔄 Ticket almacenado. Inicializando Arquitectura KIE/OCR...")
@@ -123,20 +141,21 @@ async def handle_photo(message: Message):
             await reply_msg.edit_text("🧩 Procesamiento Visual exitoso. Adaptando al modelo relacional SQL...")
             
             # Fase 3: Adaptation & Mapping (Anti-Corruption Layer)
+            ocr_result_crudo['hash_archivo'] = hash_img
             mapped_data = preparar_para_db(ocr_result_crudo)
             
             # Fase 4: Persistencia y Grabado Transaccional (Off-loaded)
             inserted_id = await asyncio.to_thread(insertar_factura, mapped_data)
             
             if inserted_id != -1:
-                has_warning = mapped_data.get('ComentarioSII') == 'REVISAR: Error de suma'
-                warning_text = "\n\n⚠️ Los datos se han guardado, pero detecto una posible discrepancia en los totales. Revísalo en el reporte." if has_warning else ""
+                has_warning = mapped_data.get('requiere_revision') == 1
+                warning_text = f"\n\n⚠️ Los datos se han guardado, pero el sistema detectó: {mapped_data.get('comentario_sii')}." if has_warning else ""
                 
                 await reply_msg.edit_text(
                     f"✅ **¡Documento Contable Registrado!**\n\n"
-                    f"👤 Proveedor: {mapped_data.get('Proveedor')}\n"
+                    f"👤 Proveedor: {mapped_data.get('proveedor_nombre')}\n"
                     f"🆔 CLAVE INTERNA: #{inserted_id}\n"
-                    f"💶 Importe Reconocido: {mapped_data.get('ImporteFactura')}€"
+                    f"💶 Importe Reconocido: {mapped_data.get('importe_total')}€"
                     f"{warning_text}\n\n"
                     "Para revisar todos los mapeos, ejecuta /excel"
                 )
