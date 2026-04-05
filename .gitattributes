@@ -1,0 +1,10 @@
+# Normalizar todos los archivos de texto a LF en el repositorio
+* text=auto eol=lf
+
+# Forzar LF explícitamente en los archivos clave
+*.py    eol=lf
+*.yml   eol=lf
+*.yaml  eol=lf
+*.txt   eol=lf
+*.md    eol=lf
+*.env   eol=lf

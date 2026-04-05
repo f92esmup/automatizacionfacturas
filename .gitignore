@@ -6,3 +6,4 @@ temp_tickets/*.jpg
 temp_tickets/*.png
 temp_tickets/*.jpeg
 donut_dataset
+facturas.db

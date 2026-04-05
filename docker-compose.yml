@@ -10,4 +10,6 @@ services:
       - ./facturas.db:/app/facturas.db
       # PERSISTENCIA DE ARCHIVOS (DATASET): Las imágenes descargadas por el bot se quedan en tu carpeta local.
       - ./temp_tickets:/app/temp_tickets
+      # MODELO DONUT: El modelo entrenado localmente se monta para que el modo REAL funcione.
+      - ./donut_facturas_model:/app/donut_facturas_model
     # Si usaras el modo real con GPU, aquí añadiríamos la configuración de deploy para reservar la GPU.
