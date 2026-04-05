@@ -7,82 +7,77 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 def init_db(db_name: str = "facturas.db") -> None:
     """
-    Inicializa la base de datos creando la tabla 'facturas' si no existe.
+    Inicializa la base de datos creando la estructura normalizada en 3 tablas.
     """
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
 
-    # Diseño del Esquema de Datos:
-    # - Se ha agregado una clave primaria 'id' autoincremental por adherencia a la 1ª Forma Normal (1FN).
-    # - Los caracteres especiales como '%' han sido sustituidos por 'Porcentaje_' y el punto '.' ha sido removido 
-    #   para cumplir con las convenciones estándar de nomenclatura SQL y evitar inyecciones o fallos de parseo.
+    # 1. Tabla de Proveedores (Maestro)
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS proveedores (
+            cif_europeo TEXT PRIMARY KEY,
+            nombre TEXT NOT NULL,
+            codigo_cuenta TEXT,
+            codigo_postal TEXT,
+            provincia TEXT
+        )
+    ''')
+
+    # 2. Tabla de Facturas (Cabecera)
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS facturas (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            cif_proveedor TEXT,
+            numero_registro TEXT NOT NULL,
+            serie TEXT,
+            su_factura TEXT,
+            fecha_expedicion DATE,
+            fecha_operacion DATE,
+            fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
+            importe_total REAL,
+            comentario_sii TEXT,
+            contrapartida TEXT DEFAULT '40000000',
+            clave_operacion TEXT DEFAULT '1',
+            hash_archivo TEXT UNIQUE,
+            requiere_revision INTEGER DEFAULT 0,
+            
+            -- Otros campos requeridos por el mapping final u opcionales
+            codigo_transaccion TEXT,
+            tipo_rectificativa TEXT,
+            clase_abono_rectificativas TEXT,
+            ejercicio_factura_rectificada TEXT,
+            serie_factura_rectificada TEXT,
+            numero_factura_rectificada TEXT,
+            fecha_factura_rectificada TEXT,
+            base_imponible_rectificada REAL,
+            cuota_iva_rectificada REAL,
+            recargo_equi_rectificada REAL,
+            numero_factura_inicial TEXT,
+            numero_factura_final TEXT,
+            id_factura_externo TEXT,
+            codigo_canal TEXT,
+            codigo_delegacion TEXT,
+            cod_departamento TEXT,
+            
+            FOREIGN KEY (cif_proveedor) REFERENCES proveedores(cif_europeo)
+        )
+    ''')
 
-            -- --- Campos obligatorios/principales ---
-            FacturaRegistro TEXT NOT NULL,
-            Serie TEXT NOT NULL,
-            SuFactura TEXT NOT NULL,
-            FechaExpedicion TEXT NOT NULL,
-            FechaOperacion TEXT NOT NULL,
-            FechaRegistro INTEGER DEFAULT 1,
-            CIFEUROPEO TEXT NOT NULL,
-            Proveedor TEXT NOT NULL,
-            ClaveOperacionFactura INTEGER DEFAULT 1,
-            ImporteFactura REAL NOT NULL,
-            
-            BaseImponible1 REAL NOT NULL,
-            PorcentajeIva1 REAL NOT NULL,
-            CuotaIva1 REAL NOT NULL,
-            
-            BaseImponible2 REAL NOT NULL,
-            PorcentajeIva2 REAL NOT NULL,
-            CuotaIva2 REAL NOT NULL,
-            
-            BaseImponible3 REAL NOT NULL,
-            PorcentajeIva3 REAL NOT NULL,
-            CuotaIva3 REAL NOT NULL,
-
-            -- --- Resto de campos (Secundarios/Opcionales) ---
-            CodigoCuenta TEXT NULL,
-            ComentarioSII TEXT NULL,
-            Contrapartida TEXT NULL,
-            CodigoTransaccion TEXT NULL,
-            
-            PorcentajeRecEq1 REAL NULL,
-            CuotaRec1 REAL NULL,
-            CodigoRetencion TEXT NULL,
-            BaseRetencion REAL NULL,
-            PorcentajeRetencion REAL NULL,
-            CuotaRetenc REAL NULL,
-            PorcentajeRecEq2 REAL NULL,
-            CuotaRec2 REAL NULL,
-            PorcentajeRecEq3 REAL NULL,
-            CuotaRec3 REAL NULL,
-            
-            TipoRectificativa TEXT NULL,
-            ClaseAbonoRectificativas TEXT NULL,
-            EjercicioFacturaRectificada TEXT NULL,
-            SerieFacturaRectificada TEXT NULL,
-            NumeroFacturaRectificada TEXT NULL,
-            FechaFacturaRectificada TEXT NULL,
-            BaseImponibleRectificada REAL NULL,
-            CuotaIvaRectificada REAL NULL,
-            RecargoEquiRectificada REAL NULL,
-            
-            NumeroFacturaInicial TEXT NULL,
-            NumeroFacturaFinal TEXT NULL,
-            IdFacturaExterno TEXT NULL,
-            CodigoPostal TEXT NULL,
-            CodProvincia TEXT NULL,
-            Provincia TEXT NULL,
-            CodigoCanal TEXT NULL,
-            CodigoDelegacion TEXT NULL,
-            CodDepartamento TEXT NULL
+    # 3. Tabla de Desglose IVA (Detalle)
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS factura_impuestos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            factura_id INTEGER NOT NULL,
+            base_imponible REAL,
+            porcentaje_iva REAL,
+            cuota_iva REAL,
+            porcentaje_receq REAL DEFAULT 0,
+            cuota_receq REAL DEFAULT 0,
+            FOREIGN KEY (factura_id) REFERENCES facturas(id)
         )
     ''')
     
+    # 4. Tabla de logs
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS logs_actividad (
             id_log INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -96,37 +91,103 @@ def init_db(db_name: str = "facturas.db") -> None:
 
     conn.commit()
     conn.close()
-    logging.info(f"Base de datos '{db_name}' inicializada con éxito.")
+    logging.info(f"Base de datos '{db_name}' inicializada con estructura normalizada.")
 
-def insertar_factura(datos_dict: Dict[str, Any], db_name: str = "facturas.db") -> int:
+def existe_hash_imagen(hash_archivo: str, db_name: str = "facturas.db") -> bool:
     """
-    Inserta una factura en la base de datos a partir de un diccionario mapeado.
-    Retorna el ID de la fila insertada o -1 en caso de fallo.
+    Verifica si una imagen ya fue procesada previamente comprobando su hash.
     """
-    if not datos_dict:
+    if not hash_archivo:
+        return False
+    
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM facturas WHERE hash_archivo = ?", (hash_archivo,))
+    row = cursor.fetchone()
+    conn.close()
+    return row is not None
+
+def insertar_factura(datos: Dict[str, Any], db_name: str = "facturas.db") -> int:
+    """
+    Inserta de forma atómica en las 3 tablas usando transacciones.
+    Retorna el ID de la factura insertada o -1 en caso de error.
+    """
+    if not datos:
         logging.warning("El diccionario de datos está vacío. No se realizó el INSERT.")
         return -1
 
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
 
-    # Construcción dinámica de la query basada en las claves del diccionario.
-    # Esto da versatilidad: si un campo opcional no viene en el dictionary, 
-    # SQLite simplemente utilizará NULL o su valor DEFAULT (ej: FechaRegistro).
-    columnas = ', '.join(datos_dict.keys())
-    placeholders = ', '.join(['?'] * len(datos_dict))
-    
-    query = f"INSERT INTO facturas ({columnas}) VALUES ({placeholders})"
-    
     try:
-        cursor.execute(query, tuple(datos_dict.values()))
-        conn.commit()
-        last_id = cursor.lastrowid
-        logging.info(f"Factura insertada exitosamente (ID: {last_id}).")
-        return last_id
+        with conn:
+            # 1. UPSERT de Proveedor
+            cif = datos.get('cif_proveedor')
+            # Si no hay CIF detectado, usamos un generico temporal para poder guardar.
+            if not cif:
+                cif = 'NO_DETECTADO_' + str(datos.get('numero_registro', '0'))
+                
+            proveedor_nombre = datos.get('proveedor_nombre', 'DESCONOCIDO')
+            
+            cursor.execute("SELECT cif_europeo FROM proveedores WHERE cif_europeo = ?", (cif,))
+            if not cursor.fetchone():
+                cursor.execute('''
+                    INSERT INTO proveedores (cif_europeo, nombre, codigo_postal, provincia)
+                    VALUES (?, ?, ?, ?)
+                ''', (cif, proveedor_nombre, datos.get('codigo_postal'), datos.get('provincia')))
+
+            # 2. Insertar Cabecera de Factura
+            cursor.execute('''
+                INSERT INTO facturas (
+                    cif_proveedor, numero_registro, serie, su_factura, 
+                    fecha_expedicion, fecha_operacion, importe_total, 
+                    comentario_sii, hash_archivo, requiere_revision,
+                    tipo_rectificativa, clase_abono_rectificativas,
+                    codigo_delegacion, numero_factura_inicial
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                cif,
+                datos.get('numero_registro'),
+                datos.get('serie'),
+                datos.get('su_factura'),
+                datos.get('fecha_expedicion'),
+                datos.get('fecha_operacion'),
+                datos.get('importe_total'),
+                datos.get('comentario_sii'),
+                datos.get('hash_archivo'),
+                datos.get('requiere_revision', 0),
+                datos.get('tipo_rectificativa'),
+                datos.get('clase_abono_rectificativas'),
+                datos.get('codigo_delegacion'),
+                datos.get('numero_factura_inicial')
+            ))
+            
+            factura_id = cursor.lastrowid
+
+            # 3. Insertar Impuestos (Detalles)
+            impuestos = datos.get('impuestos', [])
+            for imp in impuestos:
+                if imp.get('base_imponible', 0) > 0 or imp.get('cuota_iva', 0) > 0:
+                    cursor.execute('''
+                        INSERT INTO factura_impuestos (
+                            factura_id, base_imponible, porcentaje_iva, cuota_iva, porcentaje_receq, cuota_receq
+                        ) VALUES (?, ?, ?, ?, ?, ?)
+                    ''', (
+                        factura_id,
+                        imp.get('base_imponible', 0),
+                        imp.get('porcentaje_iva', 0),
+                        imp.get('cuota_iva', 0),
+                        imp.get('porcentaje_receq', 0),
+                        imp.get('cuota_receq', 0)
+                    ))
+
+        # Si salimos del with conn sin excepciones, se hace commit automático
+        logging.info(f"Factura insertada exitosamente (ID: {factura_id}).")
+        return factura_id
+
     except sqlite3.Error as e:
-        logging.error(f"Error en BD durante inserción de factura: {e}")
-        conn.rollback()
+        # En caso de error, 'with conn:' ya hizo discard/rollback implícito
+        logging.error(f"Error en BD durante inserción transaccional: {e}")
         return -1
     finally:
         conn.close()
@@ -149,5 +210,5 @@ def registrar_evento(id_usuario: int, nombre_usuario: str, accion: str, resultad
         conn.close()
 
 if __name__ == '__main__':
-    # Inicialización local para probar la creación de la tabla.
+    # Inicialización local para probar la creación de las tablas.
     init_db()
