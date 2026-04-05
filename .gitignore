@@ -6,4 +6,5 @@ temp_tickets/*.jpg
 temp_tickets/*.png
 temp_tickets/*.jpeg
 donut_dataset
-facturas.db
+# Datos de PostgreSQL (viven en el host pero no se versionan)
+data/

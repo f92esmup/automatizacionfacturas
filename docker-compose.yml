@@ -1,4 +1,28 @@
 services:
+
+  # ── Contenedor A: Base de Datos PostgreSQL ─────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: erp_postgres
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      # PERSISTENCIA: Los archivos de Postgres viven en tu host, no en el contenedor.
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - erp_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Contenedor B: Bot de Telegram ──────────────────────────────────────────
   bot_facturas:
     build: .
     container_name: erp_facturador_bot
@@ -6,10 +30,18 @@ services:
     env_file:
       - .env
     volumes:
-      # PERSISTENCIA ESTRUCTURADA: La base de datos vive en tu host y se mapea al contenedor.
-      - ./facturas.db:/app/facturas.db
-      # PERSISTENCIA DE ARCHIVOS (DATASET): Las imágenes descargadas por el bot se quedan en tu carpeta local.
+      # PERSISTENCIA DE ARCHIVOS (DATASET): Las imágenes descargadas permanecen en el host.
       - ./temp_tickets:/app/temp_tickets
-      # MODELO DONUT: El modelo entrenado localmente se monta para que el modo REAL funcione.
+      # MODELO DONUT: El modelo entrenado localmente se monta para el modo REAL.
       - ./donut_facturas_model:/app/donut_facturas_model
-    # Si usaras el modo real con GPU, aquí añadiríamos la configuración de deploy para reservar la GPU.
+    networks:
+      - erp_net
+    depends_on:
+      db:
+        condition: service_healthy  # El bot espera a que Postgres esté listo
+
+# ── Red interna privada ────────────────────────────────────────────────────
+networks:
+  erp_net:
+    driver: bridge
+

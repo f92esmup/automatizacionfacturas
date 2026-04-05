@@ -5,3 +5,4 @@ openpyxl
 torch
 transformers
 Pillow
+psycopg2-binary
