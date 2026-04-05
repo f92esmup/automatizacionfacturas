@@ -172,6 +172,12 @@ async def cmd_cancelar(message: Message, state: FSMContext):
 # ──────────────────────────────────────────────────────────────────────────────
 # HANDLER DE FOTO  →  OCR  →  ALERTA AL ADMIN
 # ──────────────────────────────────────────────────────────────────────────────
+@dp.message(Command("miid"))
+async def cmd_miid(message: Message):
+    """TEMPORAL: muestra el user ID. Eliminar tras confirmar MASTER_ADMIN_ID."""
+    await message.answer(f"🆔 Tu user ID es: `{message.from_user.id}`", parse_mode="Markdown")
+
+
 @dp.message(F.photo)
 async def handle_photo(message: Message):
     user_id  = message.from_user.id
