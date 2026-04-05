@@ -9,6 +9,7 @@ __pycache__
 # State directories and databases (Ignorados durante build para no engordar la imagen o empaquetar estado dinámico)
 temp_tickets/
 facturas.db
+donut_dataset/
 
 # Virtual environments
 venv/
