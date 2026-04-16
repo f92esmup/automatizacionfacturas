@@ -20,6 +20,14 @@ import re
 import time
 from pathlib import Path
 from typing import List, Dict, Any
+from dotenv import load_dotenv
+
+# Cargar variables de entorno del .env
+load_dotenv()
+
+# Si estamos en local, el host suele ser 'localhost', pero en Docker es 'db'
+if os.getenv("POSTGRES_HOST") == "db":
+    os.environ["POSTGRES_HOST"] = "localhost"
 
 # ── Ajusta el path para importar los módulos del proyecto ──────────────────────
 BASE_DIR = Path(__file__).parent
@@ -29,7 +37,6 @@ from database_manager import init_db, existe_hash_imagen, insertar_factura
 from logic_mapper import limpiar_cif, ensure_float, parse_date
 
 # ── Rutas ──────────────────────────────────────────────────────────────────────
-DB_PATH         = str(BASE_DIR / "facturas.db")
 TEMP_DIR        = BASE_DIR / "temp_tickets"
 DATASET_DIR     = BASE_DIR / "donut_dataset" / "train"
 METADATA_FILE   = DATASET_DIR / "metadata.jsonl"
@@ -323,7 +330,7 @@ def main():
     print("╚" + "═" * 58 + "╝")
 
     # Inicializar BD si aún no existe
-    init_db(DB_PATH)
+    init_db()
 
     while True:
         imagen_path = seleccionar_imagen()
@@ -336,7 +343,7 @@ def main():
         hash_img = calcular_sha256(imagen_path)
 
         # ── 2. Comprobar duplicado en BD ──────────────────────────────────────
-        ya_en_db = existe_hash_imagen(hash_img, DB_PATH)
+        ya_en_db = existe_hash_imagen(hash_img)
         if ya_en_db:
             print(f"\n  ⚠  Esta imagen YA está registrada en la base de datos.")
             accion = input("  ¿Qué deseas hacer? [O]verwrite / [A]ñadir solo dataset / [S]altar: ").strip().upper()
@@ -363,7 +370,7 @@ def main():
 
         # ── 4. Insertar en BD ─────────────────────────────────────────────────
         print("\n  💾  Insertando en base de datos…")
-        factura_id = insertar_factura(datos, DB_PATH)
+        factura_id = insertar_factura(datos)
 
         if factura_id == -1:
             print("  ✖  Error al insertar en BD. Comprueba los logs.")
