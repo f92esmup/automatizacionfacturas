@@ -2,7 +2,7 @@ aiogram>=3.0.0
 python-dotenv
 pandas
 openpyxl
-torch
-transformers
-Pillow
 psycopg2-binary
+pydantic
+pydantic-settings
+openai

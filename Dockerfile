@@ -1,20 +1,32 @@
-# Imagen fundacional oficial optimizada (versión idéntica a tu virtual environment local Python 3.12)
+# Imagen base de Python 3.12-slim para una imagen ligera y segura
 FROM python:3.12-slim
 
-# Buenas prácticas: forzar outputs al vuelo y evitar generación de bytecode obsoleto (Mantiene imagen inmutable)
+# Evitar la generación de archivos .pyc y asegurar que los logs se muestren en tiempo real
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Entorno de trabajo interno del ecosistema Linux virtualizado
+# Directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Capa de Dependencias (Instalar previo a copiar el código permite a Docker cachear (reutilizar) esta capa si tu código cambia pero requirements.txt no)
-COPY requirements.txt /app/
+# Instalar dependencias del sistema necesarias para psycopg2 y utilidades de red
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libpq-dev \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copiar solo requirements primero para aprovechar la caché de Docker
+COPY requirements.txt .
+
+# Instalar dependencias de Python
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Capa de Código Fuente
-COPY . /app/
+# Copiar el código fuente del proyecto
+COPY . .
 
-# Punto de entrada de inicialización del Thread / EventLoop
-CMD ["python", "bot_main.py"]
+# Crear directorios para persistencia (aunque se monten como volúmenes)
+RUN mkdir -p temp_tickets facturas_procesadas
+
+# Ejecutar el bot
+CMD ["python", "main.py"]
