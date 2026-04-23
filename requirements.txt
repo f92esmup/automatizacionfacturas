@@ -2,7 +2,8 @@ aiogram>=3.0.0
 python-dotenv
 pandas
 openpyxl
-psycopg2-binary
+google-cloud-firestore
+google-cloud-storage
 pydantic
 pydantic-settings
 openai

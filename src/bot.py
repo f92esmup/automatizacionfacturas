@@ -11,6 +11,7 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, BufferedInputFile
 
+from google.cloud import storage
 from src.config import config
 from src.extractor import extract_invoice_data
 from src.validator import validate_invoice
@@ -21,6 +22,9 @@ logger = logging.getLogger(__name__)
 
 bot = Bot(token=config.bot_token)
 dp = Dispatcher()
+
+# Inicializar cliente de Google Cloud Storage
+storage_client = storage.Client(project=config.gcp_project_id)
 
 
 def calcular_hash_imagen(filepath: str) -> str:
@@ -103,24 +107,31 @@ async def handle_photo(message: Message):
         invoice.hash_archivo = hash_img
         res_id = await asyncio.to_thread(insertar_factura, invoice)
 
-        if res_id != -1:
-            # ── ORGANIZAR IMAGEN ──
+        if res_id != "-1":
+            # ── SUBIR IMAGEN A CLOUD STORAGE ──
             fecha_dt = invoice.fecha_expedicion
             year_str = str(fecha_dt.year)
             month_str = str(fecha_dt.month).zfill(2)
 
             # Limpiar nombre del proveedor
             prov_limpio = re.sub(r"[^a-zA-Z0-9_\-]", "_", invoice.proveedor_nombre)
-
-            # Directorio: facturas_procesadas/YYYY/MM
-            dest_dir = Path(config.processed_dir) / year_str / month_str
-            dest_dir.mkdir(parents=True, exist_ok=True)
-
             nuevo_nombre = f"{prov_limpio}_{fecha_dt}_{hash_img[:8]}.jpg"
-            dest_path = dest_dir / nuevo_nombre
+            
+            # Ruta en el bucket: facturas_procesadas/YYYY/MM/archivo.jpg
+            blob_path = f"{config.processed_dir}/{year_str}/{month_str}/{nuevo_nombre}"
+            
+            try:
+                bucket = storage_client.bucket(config.gcs_bucket_name)
+                blob = bucket.blob(blob_path)
+                blob.upload_from_filename(str(filepath))
+                logger.info(f"Imagen subida a GCS: {blob_path}")
+            except Exception as e:
+                logger.error(f"Error subiendo a GCS: {e}")
+                await message.answer("⚠️ Error al subir la imagen a la nube, pero los datos se guardaron.")
 
-            # Mover archivo
-            shutil.move(str(filepath), str(dest_path))
+            # Eliminar archivo temporal
+            if filepath.exists():
+                filepath.unlink()
 
             # Desglose de impuestos para el resumen
             ivas_texto = "\n".join(
@@ -140,13 +151,13 @@ async def handle_photo(message: Message):
             )
 
             await reply_msg.edit_text(
-                f"{revision_aviso}✅ **Factura registrada** (ID #{res_id})\n\n"
+                f"{revision_aviso}✅ **Factura registrada** (ID: `{res_id}`)\n\n"
                 f"👤 **Proveedor:** {invoice.proveedor_nombre} (CIF: `{invoice.cif_proveedor}`)\n"
                 f"🧾 **Nº Factura:** `{invoice.numero_registro}`\n"
                 f"📅 **Fecha:** {invoice.fecha_expedicion}\n"
                 f"💶 **Total:** {invoice.importe_total} €\n\n"
                 f"📊 **Impuestos:**\n{ivas_texto}\n\n"
-                f"📁 Guardada en: `{year_str}/{month_str}/{nuevo_nombre}`",
+                f"☁️ Guardada en GCS: `{blob_path}`",
                 parse_mode="Markdown",
             )
         else:

@@ -1,119 +1,65 @@
 import logging
-import psycopg2
-from typing import Optional
+from typing import Optional, List
+from google.cloud import firestore
 from src.config import config
 from src.models import Invoice
 
 logger = logging.getLogger(__name__)
 
-def get_conn():
-    return psycopg2.connect(
-        host=config.postgres_host,
-        port=config.postgres_port,
-        dbname=config.postgres_db,
-        user=config.postgres_user,
-        password=config.postgres_password,
-    )
+# Inicializar cliente de Firestore
+# Si config.gcp_project_id es None, usará las credenciales por defecto (ADC)
+db = firestore.Client(project=config.gcp_project_id)
 
 def init_db() -> None:
-    conn = get_conn()
-    cur = conn.cursor()
-    try:
-        cur.execute('''
-            CREATE TABLE IF NOT EXISTS proveedores (
-                cif_europeo TEXT PRIMARY KEY,
-                nombre      TEXT NOT NULL,
-                codigo_cuenta TEXT,
-                codigo_postal TEXT,
-                provincia     TEXT
-            )
-        ''')
-        cur.execute('''
-            CREATE TABLE IF NOT EXISTS facturas (
-                id                          SERIAL PRIMARY KEY,
-                cif_proveedor               TEXT,
-                numero_registro             TEXT NOT NULL,
-                serie                       TEXT,
-                su_factura                  TEXT,
-                fecha_expedicion            DATE,
-                fecha_operacion             DATE,
-                fecha_registro              TIMESTAMP DEFAULT NOW(),
-                importe_total               REAL,
-                comentario_sii              TEXT,
-                contrapartida               TEXT DEFAULT '40000000',
-                clave_operacion             TEXT DEFAULT '1',
-                hash_archivo                TEXT UNIQUE,
-                requiere_revision           INTEGER DEFAULT 0,
-                FOREIGN KEY (cif_proveedor) REFERENCES proveedores(cif_europeo)
-            )
-        ''')
-        cur.execute('''
-            CREATE TABLE IF NOT EXISTS factura_impuestos (
-                id               SERIAL PRIMARY KEY,
-                factura_id       INTEGER NOT NULL,
-                base_imponible   REAL,
-                porcentaje_iva   REAL,
-                cuota_iva        REAL,
-                porcentaje_receq REAL DEFAULT 0,
-                cuota_receq      REAL DEFAULT 0,
-                FOREIGN KEY (factura_id) REFERENCES facturas(id)
-            )
-        ''')
-        conn.commit()
-        logger.info("Base de datos inicializada correctamente.")
-    finally:
-        cur.close()
-        conn.close()
+    """
+    Firestore no requiere inicialización de esquema como SQL.
+    Simplemente validamos la conexión o registramos el inicio.
+    """
+    logger.info("Firestore inicializado y listo.")
 
 def existe_hash_imagen(hash_archivo: str) -> bool:
-    if not hash_archivo: return False
-    conn = get_conn()
-    cur = conn.cursor()
-    cur.execute("SELECT id FROM facturas WHERE hash_archivo = %s", (hash_archivo,))
-    exists = cur.fetchone() is not None
-    cur.close()
-    conn.close()
-    return exists
+    if not hash_archivo:
+        return False
+    
+    docs = db.collection("facturas").where("hash_archivo", "==", hash_archivo).limit(1).get()
+    return len(list(docs)) > 0
 
-def insertar_factura(invoice: Invoice) -> int:
-    conn = get_conn()
-    cur = conn.cursor()
+def insertar_factura(invoice: Invoice) -> str:
+    """
+    Inserta la factura en Firestore.
+    Retorna el ID del documento creado o "-1" en caso de error.
+    """
     try:
-        # Upsert proveedor
-        cur.execute("SELECT cif_europeo FROM proveedores WHERE cif_europeo = %s", (invoice.cif_proveedor,))
-        if not cur.fetchone():
-            cur.execute("INSERT INTO proveedores (cif_europeo, nombre) VALUES (%s, %s)", 
-                       (invoice.cif_proveedor, invoice.proveedor_nombre))
-        
-        # Insertar factura
-        cur.execute('''
-            INSERT INTO facturas (
-                cif_proveedor, numero_registro, serie, su_factura,
-                fecha_expedicion, fecha_operacion, importe_total,
-                comentario_sii, hash_archivo, requiere_revision
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            RETURNING id
-        ''', (
-            invoice.cif_proveedor, invoice.numero_registro, invoice.serie, invoice.su_factura,
-            invoice.fecha_expedicion, invoice.fecha_operacion, invoice.importe_total,
-            invoice.comentario_sii, invoice.hash_archivo, invoice.requiere_revision
-        ))
-        factura_id = cur.fetchone()[0]
+        # 1. Upsert Proveedor
+        # Usamos el CIF como ID de documento para evitar duplicados y facilitar búsquedas
+        prov_ref = db.collection("proveedores").document(invoice.cif_proveedor)
+        prov_ref.set({
+            "cif_europeo": invoice.cif_proveedor,
+            "nombre": invoice.proveedor_nombre,
+            # Podríamos añadir más campos si el modelo Invoice los tuviera
+        }, merge=True)
 
-        # Insertar impuestos
-        for imp in invoice.impuestos:
-            cur.execute('''
-                INSERT INTO factura_impuestos (
-                    factura_id, base_imponible, porcentaje_iva, cuota_iva
-                ) VALUES (%s, %s, %s, %s)
-            ''', (factura_id, imp.base_imponible, imp.porcentaje_iva, imp.cuota_iva))
+        # 2. Insertar Factura
+        # Convertimos el modelo Pydantic a dict (incluyendo impuestos anidados)
+        invoice_data = invoice.model_dump()
         
-        conn.commit()
-        return factura_id
+        # Añadir timestamp de registro
+        invoice_data["fecha_registro"] = firestore.SERVER_TIMESTAMP
+        
+        # Conversión de fechas (Firestore no guarda objetos date de Python nativamente)
+        # Se guardarán como strings ISO o podemos convertirlas a datetime
+        invoice_data["fecha_expedicion"] = str(invoice.fecha_expedicion)
+        if invoice.fecha_operacion:
+            invoice_data["fecha_operacion"] = str(invoice.fecha_operacion)
+
+        # Creamos el documento en la colección 'facturas'
+        # Dejamos que Firestore genere un ID único o podríamos usar uno basado en hash
+        doc_ref = db.collection("facturas").document()
+        doc_ref.set(invoice_data)
+        
+        logger.info(f"Factura guardada en Firestore con ID: {doc_ref.id}")
+        return doc_ref.id
+
     except Exception as e:
-        conn.rollback()
-        logger.error(f"Error insertando factura: {e}")
-        return -1
-    finally:
-        cur.close()
-        conn.close()
+        logger.error(f"Error insertando factura en Firestore: {e}")
+        return "-1"
