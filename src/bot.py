@@ -13,6 +13,7 @@ from aiogram.types import Message, BufferedInputFile
 
 from src.config import config
 from src.extractor import extract_invoice_data
+from src.validator import validate_invoice
 from src.database import insertar_factura, existe_hash_imagen, init_db
 from src.excel import obtener_excel_buffer
 
@@ -81,6 +82,12 @@ async def handle_photo(message: Message):
             await reply_msg.edit_text("❌ No se pudo extraer información de la imagen.")
             return
 
+        # --- VALIDACIÓN Y CORRECCIÓN ---
+        invoice, warnings = validate_invoice(invoice)
+        if warnings:
+            warn_text = "⚠️ **Correcciones aplicadas:**\n" + "\n".join([f"- {w}" for w in warnings])
+            await message.answer(warn_text, parse_mode="Markdown")
+
         invoice.hash_archivo = hash_img
         res_id = await asyncio.to_thread(insertar_factura, invoice)
         
@@ -103,10 +110,21 @@ async def handle_photo(message: Message):
             # Mover archivo
             shutil.move(str(filepath), str(dest_path))
 
+            # Desglose de impuestos para el resumen
+            ivas_texto = "\n".join([f"  • Base: {i.base_imponible} | Tipo: {i.porcentaje_iva}% | IVA: {i.cuota_iva}" for i in invoice.impuestos])
+            if not ivas_texto:
+                ivas_texto = "  • Sin impuestos detectados"
+
+            # Construir indicador de revisión
+            revision_aviso = "⚠️ **REQUIERE REVISIÓN MANUAL (Descuadre en Totales)**\n\n" if invoice.requiere_revision else ""
+
             await reply_msg.edit_text(
-                f"✅ **Factura registrada** (ID #{res_id})\n\n"
-                f"👤 {invoice.proveedor_nombre}\n"
-                f"📅 {invoice.fecha_expedicion} | 💶 {invoice.importe_total} €\n"
+                f"{revision_aviso}✅ **Factura registrada** (ID #{res_id})\n\n"
+                f"👤 **Proveedor:** {invoice.proveedor_nombre} (CIF: `{invoice.cif_proveedor}`)\n"
+                f"🧾 **Nº Factura:** `{invoice.numero_registro}`\n"
+                f"📅 **Fecha:** {invoice.fecha_expedicion}\n"
+                f"💶 **Total:** {invoice.importe_total} €\n\n"
+                f"📊 **Impuestos:**\n{ivas_texto}\n\n"
                 f"📁 Guardada en: `{year_str}/{month_str}/{nuevo_nombre}`",
                 parse_mode="Markdown"
             )
