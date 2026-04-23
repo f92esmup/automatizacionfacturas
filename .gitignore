@@ -2,6 +2,7 @@ label_studio/
 venv/
 env/
 .env
+env.yaml
 temp_tickets/*.jpg
 temp_tickets/*.png
 temp_tickets/*.jpeg
