@@ -66,7 +66,7 @@ def extract_invoice_data(image_path: str) -> Optional[Invoice]:
                 }
             ],
             response_format={"type": "json_object"},
-            max_tokens=1000
+            max_completion_tokens=1000
         )
 
         raw_json = response.choices[0].message.content

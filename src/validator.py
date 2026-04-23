@@ -1,8 +1,22 @@
 from typing import List, Tuple
+from datetime import date
 from src.models import Invoice
 
 def validate_invoice(invoice: Invoice) -> Tuple[Invoice, List[str]]:
     warnings = []
+
+    # 0. Validación de fecha (no más de un año de antigüedad)
+    hoy = date.today()
+    try:
+        limite_un_anyo = hoy.replace(year=hoy.year - 1)
+    except ValueError: # Manejo para años bisiestos (29 de febrero)
+        limite_un_anyo = hoy.replace(year=hoy.year - 1, day=28)
+
+    if invoice.fecha_expedicion < limite_un_anyo:
+        warnings.append(f"La fecha extraída ({invoice.fecha_expedicion}) es anterior a un año. Se sustituye por hoy ({hoy}).")
+        invoice.fecha_expedicion = hoy
+        invoice.fecha_operacion = hoy
+
     # Tipos de IVA legales en España (incluimos 0% para exentos/recargo de equivalencia se maneja aparte si fuera necesario)
     TIPOS_IVA_LEGALES = [21.0, 10.0, 4.0, 0.0]
     
