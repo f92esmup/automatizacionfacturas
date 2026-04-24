@@ -1,0 +1,11 @@
+[
+  {
+    "name": "keep-only-latest-version",
+    "action": {
+      "type": "Keep"
+    },
+    "mostRecentVersions": {
+      "keepCount": 1
+    }
+  }
+]
