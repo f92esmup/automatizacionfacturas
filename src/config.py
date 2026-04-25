@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     # Webhook Settings
     webhook_url: str = Field(default="", alias="WEBHOOK_URL")
     webhook_path: str = Field(default="/webhook", alias="WEBHOOK_PATH")
-    port: int = Field(default=8000, alias="PORT")
+    port: int = Field(default=8080, alias="PORT")
     web_server_host: str = Field(default="0.0.0.0", alias="WEB_SERVER_HOST")
     
     @property

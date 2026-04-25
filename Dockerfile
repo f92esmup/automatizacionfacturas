@@ -1,31 +1,29 @@
-# Imagen base de Python 3.12-slim para una imagen ligera y segura
+# Imagen base de Python 3.12-slim
 FROM python:3.12-slim
 
-# Evitar la generación de archivos .pyc y asegurar que los logs se muestren en tiempo real
+# Entorno
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PORT=8080
 
-# Directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Instalar dependencias del sistema necesarias y utilidades de red
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar solo requirements primero para aprovechar la caché de Docker
-COPY requirements.txt .
-
 # Instalar dependencias de Python
+COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Copiar el código fuente del proyecto
+# Copiar el código fuente (el .dockerignore evitará que entre basura)
 COPY . .
 
-# Crear directorios para persistencia (aunque se monten como volúmenes)
-RUN mkdir -p temp_tickets facturas_procesadas
+# Puerto expuesto
+EXPOSE 8080
 
-# Ejecutar el bot
-CMD ["python", "main.py"]
+# Ejecutar el bot con uvicorn directamente para producción
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]

@@ -24,42 +24,36 @@ Este es un bot de Telegram diseñado para automatizar la gestión de facturas y 
 
 ---
 
-## 💻 Configuración Local
+## 💻 Prueba Local con Docker (Recomendado)
 
-### 1. Clonar el repositorio
+Esta es la forma más profesional de probar el bot emulando el entorno de la nube antes de desplegar.
+
+### 1. Preparar credenciales de Google Cloud
+1. Ve a la [Consola de GCP](https://console.cloud.google.com/).
+2. Crea una **Cuenta de Servicio** con roles: `Cloud Datastore User` y `Storage Object Admin`.
+3. Crea una **Llave JSON**, descárgala y guárdala en la raíz del proyecto como `gcp-key.json`.
+
+### 2. Configurar Variables
+Copia el archivo de ejemplo y rellena tus datos reales:
 ```bash
-git clone <url-del-repo>
-cd automatizacionfacturas
+cp .env.example .env
 ```
+*Asegúrate de que `GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json` esté configurado en el `.env`.*
 
-### 2. Crear entorno virtual e instalar dependencias
+### 3. Iniciar el sistema
 ```bash
-python -m venv .venv
-source .venv/bin/activate  # En Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+docker-compose up --build
 ```
 
-### 3. Variables de Entorno (`.env`)
-Crea un archivo `.env` en la raíz del proyecto con los siguientes valores:
-```env
-BOT_TOKEN=tu_token_de_telegram
-MASTER_ADMIN_ID=tu_id_de_telegram
-AUTHORIZED_USERS=id1,id2,id3
-OPENAI_API_KEY=tu_key_de_openai
-GCP_PROJECT_ID=tu_id_de_proyecto_gcp
-GCS_BUCKET_NAME=tu_nombre_de_bucket
-```
-
-### 4. Ejecución
-```bash
-python main.py
-```
+### 4. Conectar con Telegram (Webhook Local)
+Como el bot corre en tu PC, Telegram no puede enviarle mensajes directamente.
+1. Instala **Ngrok** y ejecuta: `ngrok http 8080`.
+2. Copia la URL `https` que te da Ngrok (ej: `https://abcd-123.ngrok-free.app`).
+3. Abre esa URL en tu navegador. El bot se autoconfigurará y verás `{"webhook_configured": true}`.
 
 ---
 
 ## 🌍 Despliegue en Producción (Google Cloud Run)
-
-Para desplegar el bot en la región de **Madrid (europe-southwest1)** y dejarlo funcionando en la nube:
 
 ### 1. Preparar el entorno de Google Cloud
 Asegúrate de tener instalada la [gcloud CLI](https://cloud.google.com/sdk/docs/install) y estar autenticado:
@@ -69,30 +63,25 @@ gcloud config set project tu-id-de-proyecto-gcp
 ```
 
 ### 2. Comando de Despliegue Directo
-Ejecuta el siguiente comando para compilar y desplegar automáticamente en Madrid:
+Ejecuta el siguiente comando para compilar y desplegar automáticamente:
 
 ```bash
 gcloud run deploy bot-facturas \
     --source . \
     --region europe-southwest1 \
     --allow-unauthenticated \
-    --set-env-vars="BOT_TOKEN=tu_token,OPENAI_API_KEY=tu_key,GCP_PROJECT_ID=tu_id,GCS_BUCKET_NAME=tu_bucket,AUTHORIZED_USERS=tu_id"
+    --set-env-vars="BOT_TOKEN=tu_token,OPENAI_API_KEY=tu_key,GCP_PROJECT_ID=tu_id,GCS_BUCKET_NAME=tu_id,AUTHORIZED_USERS=tu_id"
 ```
-
-*Nota: La opción `--allow-unauthenticated` es crítica para que Telegram pueda enviar los mensajes al bot.*
 
 ### 3. Activación del Webhook
 Una vez completado el despliegue, Google te dará una **Service URL** (ej: `https://bot-facturas-xxxx.a.run.app`).
 
-1. Copia esa URL.
-2. Ábrela en tu navegador.
-3. El bot se autoconfigurará al recibir la visita y verás un mensaje de confirmación: `{"webhook_configured": true}`.
-
-¡El bot ya estará listo para recibir imágenes en Telegram!
+1. Abre esa URL en tu navegador para que el bot registre la nueva dirección en los servidores de Telegram.
+2. Deberías ver: `{"status": "ok", "webhook_configured": true}`.
 
 ---
 
-## 📁 Estructura del Proyecto
+## 📂 Estructura del Proyecto
 ```text
 ├── src/
 │   ├── bot.py        # Lógica de comandos y handlers de Telegram
@@ -102,7 +91,8 @@ Una vez completado el despliegue, Google te dará una **Service URL** (ej: `http
 │   └── excel.py      # Generación de reportes XLSX
 ├── main.py           # Punto de entrada (FastAPI + Uvicorn)
 ├── Dockerfile        # Definición de imagen para Cloud Run
-└── requirements.txt  # Dependencias del proyecto
+├── docker-compose.yml # Orquestación para pruebas locales
+└── .env.example      # Plantilla de configuración
 ```
 
 ---

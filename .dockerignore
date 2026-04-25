@@ -1,5 +1,6 @@
 .env
 env.yaml
+env_vars.yaml
 .git
 __pycache__
 *.pyc
@@ -7,11 +8,16 @@ __pycache__
 *.pyd
 .DS_Store
 
-# State directories and databases (Ignorados durante build para no engordar la imagen o empaquetar estado dinámico)
-temp_tickets/
-facturas.db
-donut_dataset/
-
-# Virtual environments
+# Ignorar entornos virtuales (CRÍTICO)
+.venv/
 venv/
 env/
+/Scripts/
+/Lib/
+
+# Ignorar datos locales y bases de datos pesadas
+data/
+temp_tickets/
+facturas_procesadas/
+facturas.db
+*.log

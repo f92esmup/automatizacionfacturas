@@ -1,0 +1,12 @@
+services:
+  bot-app:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    volumes:
+      # Mapeamos la llave de Google Cloud para que el contenedor tenga permisos en local
+      # Debes descargar tu llave JSON de la consola de GCP y renombrarla como gcp-key.json
+      - ./gcp-key.json:/app/gcp-key.json
+    restart: always
