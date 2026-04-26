@@ -3,24 +3,20 @@ from pydantic import Field
 from typing import Optional, List
 
 class Settings(BaseSettings):
-    # Telegram
+    # --- SECRETOS (Vendrán de Secret Manager en Cloud Run o .env en local) ---
     bot_token: str = Field(alias="BOT_TOKEN")
-    master_admin_id: int = Field(default=0, alias="MASTER_ADMIN_ID")
-    authorized_users: str = Field(default="", alias="AUTHORIZED_USERS")
-
-    # OpenAI / LLM
     openai_api_key: str = Field(alias="OPENAI_API_KEY")
-    openai_model: str = Field(default="gpt-4o-mini", alias="OPENAI_MODEL")
 
-    # Google Cloud
-    gcp_project_id: Optional[str] = Field(default=None, alias="GCP_PROJECT_ID")
-    gcs_bucket_name: str = Field(default="facturas-erp-storage", alias="GCS_BUCKET_NAME")
+    # --- CONFIGURACIÓN HARDCODED (Valores por defecto del proyecto) ---
+    master_admin_id: int = Field(default=6901550600, alias="MASTER_ADMIN_ID")
+    authorized_users: str = Field(default="6901550600", alias="AUTHORIZED_USERS")
+    openai_model: str = Field(default="gpt-5.4", alias="OPENAI_MODEL")
+    gcp_project_id: str = Field(default="mi-facturador-bot-01", alias="GCP_PROJECT_ID")
+    gcs_bucket_name: str = Field(default="facturas-storage-mi-facturador-bot-01", alias="GCS_BUCKET_NAME")
 
-    # App Settings
+    # --- AJUSTES INTERNOS ---
     temp_dir: str = "/tmp/temp_tickets"
     processed_dir: str = "facturas_procesadas"
-    
-    # Webhook Settings
     webhook_url: str = Field(default="", alias="WEBHOOK_URL")
     webhook_path: str = Field(default="/webhook", alias="WEBHOOK_PATH")
     port: int = Field(default=8080, alias="PORT")
