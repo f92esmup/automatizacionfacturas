@@ -1,22 +1,14 @@
 steps:
   # 1. Construir la imagen de Docker
-  - name: 'gcloudsdk/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        docker build -t $_REGION-docker.pkg.dev/$PROJECT_ID/$_REPOSITORY/$_SERVICE_NAME:latest .
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', '$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPOSITORY/$_SERVICE_NAME:latest', '.']
 
   # 2. Subir la imagen al repositorio (Artifact Registry)
-  - name: 'gcloudsdk/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        docker push $_REGION-docker.pkg.dev/$PROJECT_ID/$_REPOSITORY/$_SERVICE_NAME:latest
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPOSITORY/$_SERVICE_NAME:latest']
 
   # 3. Desplegar en Cloud Run
-  - name: 'gcloudsdk/cloud-sdk'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args:
       - 'run'
@@ -34,6 +26,3 @@ substitutions:
   _REGION: europe-southwest1
   _SERVICE_NAME: bot-facturas
   _REPOSITORY: cloud-run-source-deploy
-
-options:
-  logging: CLOUD_LOGGING
