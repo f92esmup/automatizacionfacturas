@@ -22,6 +22,9 @@ steps:
       - '--set-secrets=BOT_TOKEN=BOT_TOKEN:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest'
       - '--quiet'
 
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 substitutions:
   _REGION: europe-southwest1
   _SERVICE_NAME: bot-facturas
