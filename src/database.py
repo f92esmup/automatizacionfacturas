@@ -41,6 +41,17 @@ def obtener_cif_por_nombre_proveedor(nombre: str) -> Optional[str]:
     
     return None
 
+def obtener_todos_proveedores() -> List[dict]:
+    """
+    Retorna una lista de diccionarios con la información de todos los proveedores.
+    """
+    try:
+        docs = db.collection("proveedores").get()
+        return [doc.to_dict() for doc in docs]
+    except Exception as e:
+        logger.error(f"Error obteniendo proveedores: {e}")
+        return []
+
 def insertar_factura(invoice: Invoice) -> str:
     """
     Inserta la factura en Firestore.
