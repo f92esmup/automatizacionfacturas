@@ -1,97 +1,84 @@
 # 🧾 Bot de Automatización de Facturas (Telegram + GCP)
 
-Este es un bot de Telegram diseñado para automatizar la gestión de facturas y tickets. El bot recibe imágenes de facturas, extrae la información clave (proveedor, CIF, fecha, importes, impuestos) mediante IA (OpenAI GPT-4o-mini), valida los datos y los almacena en una base de datos de **Google Cloud Firestore**, guardando además la imagen original en **Google Cloud Storage**.
+Este es un bot de Telegram diseñado para automatizar la gestión de facturas y tickets. El bot recibe imágenes de facturas, extrae la información clave mediante IA, valida los datos y los almacena en una base de datos de **Google Cloud Firestore**, guardando además la imagen original en **Google Cloud Storage**.
 
 ---
 
 ## 🚀 Características Principales
-- **Extracción Inteligente:** Usa modelos de visión de OpenAI para leer facturas complejas.
-- **Validación Automática:** Comprueba cuadres de bases imponibles y cuotas de IVA.
-- **Almacenamiento en la Nube:** Organización automática por carpetas `Año/Mes` en Cloud Storage.
-- **Descarga de Reportes:** Genera archivos Excel consolidados de todas las facturas registradas.
-- **Webhook Autoconfigurable:** El bot detecta automáticamente su URL al desplegarse en Cloud Run.
+- **Extracción con OpenAI Vision:** Utiliza GPT-4o-mini para extraer proveedor, CIF, fecha, importes e impuestos de imágenes.
+- **Corrección Inteligente de Proveedores:** Si un proveedor ya está registrado, el bot utiliza automáticamente su CIF guardado para corregir posibles errores de lectura de la IA de forma silenciosa.
+- **Validación Robusta:** Comprueba automáticamente la coherencia matemática de los impuestos y que los tipos de IVA sean legales en España.
+- **Almacenamiento Organizado:** Las imágenes se guardan en Cloud Storage estructuradas por `Año/Mes`.
+- **Reportes en Excel:** Genera archivos XLSX consolidados con limpieza automática de datos (manejo de zonas horarias y nulos) para su uso directo en contabilidad.
+- **CI/CD Integrado:** Despliegue automático en Cloud Run mediante Google Cloud Build Triggers al hacer push a la rama principal.
 
 ---
 
 ## 🛠️ Tecnologías y Arquitectura
 - **Lenguaje:** Python 3.12
-- **Framework Web:** [FastAPI](https://fastapi.tiangolo.com/) (Servidor de Webhook)
+- **Framework Web:** [FastAPI](https://fastapi.tiangolo.com/) (Webhooks)
 - **Bot Library:** [Aiogram 3.x](https://docs.aiogram.dev/)
+- **Modelado de Datos:** [Pydantic](https://docs.pydantic.dev/)
 - **Base de Datos:** [Google Cloud Firestore](https://cloud.google.com/firestore)
 - **Almacenamiento:** [Google Cloud Storage](https://cloud.google.com/storage)
 - **IA:** [OpenAI API](https://platform.openai.com/) (GPT-4o-mini)
-- **Infraestructura:** [Google Cloud Run](https://cloud.google.com/run) (Serverless Docker)
+- **Infraestructura:** [Google Cloud Run](https://cloud.google.com/run) + [Secret Manager](https://cloud.google.com/secret-manager)
+- **CI/CD:** [Google Cloud Build](https://cloud.google.com/build)
 
 ---
 
-## 💻 Prueba Local con Docker (Recomendado)
+## 💻 Configuración Local
 
-Esta es la forma más profesional de probar el bot emulando el entorno de la nube antes de desplegar.
-
-### 1. Preparar credenciales de Google Cloud
-1. Ve a la [Consola de GCP](https://console.cloud.google.com/).
-2. Crea una **Cuenta de Servicio** con roles: `Cloud Datastore User` y `Storage Object Admin`.
-3. Crea una **Llave JSON**, descárgala y guárdala en la raíz del proyecto como `gcp-key.json`.
+### 1. Requisitos
+- Docker y Docker Compose.
+- Cuenta de Servicio de GCP con roles: `Cloud Datastore User` y `Storage Object Admin`.
 
 ### 2. Configurar Variables
-Copia el archivo de ejemplo y rellena tus datos reales:
+Copia el ejemplo y rellena tus datos:
 ```bash
 cp .env.example .env
 ```
-*Asegúrate de que `GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-key.json` esté configurado en el `.env`.*
+*Asegúrate de colocar tu llave JSON de GCP en la raíz como `gcp-key.json`.*
 
-### 3. Iniciar el sistema
+### 3. Iniciar
 ```bash
 docker-compose up --build
 ```
 
-### 4. Conectar con Telegram (Webhook Local)
-Como el bot corre en tu PC, Telegram no puede enviarle mensajes directamente.
-1. Instala **Ngrok** y ejecuta: `ngrok http 8080`.
-2. Copia la URL `https` que te da Ngrok (ej: `https://abcd-123.ngrok-free.app`).
-3. Abre esa URL en tu navegador. El bot se autoconfigurará y verás `{"webhook_configured": true}`.
-
 ---
 
-## 🌍 Despliegue en Producción (Google Cloud Run)
+## 🌍 Despliegue y CI/CD (Google Cloud)
 
-### 1. Preparar el entorno de Google Cloud
-Asegúrate de tener instalada la [gcloud CLI](https://cloud.google.com/sdk/docs/install) y estar autenticado:
-```bash
-gcloud auth login
-gcloud config set project tu-id-de-proyecto-gcp
-```
+El proyecto está configurado para desplegarse automáticamente mediante un **Cloud Build Trigger**.
 
-### 2. Comando de Despliegue Directo
-Ejecuta el siguiente comando para compilar y desplegar automáticamente:
+### 1. Secretos (Secret Manager)
+El despliegue requiere que los siguientes secretos existan en Google Cloud Secret Manager:
+- `BOT_TOKEN`: Token de tu bot de Telegram.
+- `OPENAI_API_KEY`: Tu API Key de OpenAI.
 
-```bash
-gcloud run deploy bot-facturas \
-    --source . \
-    --region europe-southwest1 \
-    --allow-unauthenticated \
-    --set-env-vars="BOT_TOKEN=tu_token,OPENAI_API_KEY=tu_key,GCP_PROJECT_ID=tu_id,GCS_BUCKET_NAME=tu_id,AUTHORIZED_USERS=tu_id"
-```
-
-### 3. Activación del Webhook
-Una vez completado el despliegue, Google te dará una **Service URL** (ej: `https://bot-facturas-xxxx.a.run.app`).
-
-1. Abre esa URL en tu navegador para que el bot registre la nueva dirección en los servidores de Telegram.
-2. Deberías ver: `{"status": "ok", "webhook_configured": true}`.
+### 2. Flujo de Trabajo
+Cada vez que se realiza un `git push origin main`:
+1. **Cloud Build** detecta el cambio.
+2. Construye la imagen de Docker.
+3. La sube a **Artifact Registry**.
+4. Despliega la nueva versión en **Cloud Run**, inyectando los secretos automáticamente.
 
 ---
 
 ## 📂 Estructura del Proyecto
 ```text
 ├── src/
-│   ├── bot.py        # Lógica de comandos y handlers de Telegram
-│   ├── extractor.py  # Conexión con OpenAI Vision API
-│   ├── database.py   # Operaciones con Google Firestore
-│   ├── config.py     # Gestión de variables con Pydantic
-│   └── excel.py      # Generación de reportes XLSX
-├── main.py           # Punto de entrada (FastAPI + Uvicorn)
-├── Dockerfile        # Definición de imagen para Cloud Run
-├── docker-compose.yml # Orquestación para pruebas locales
+│   ├── bot.py        # Comandos de Telegram y lógica principal
+│   ├── extractor.py  # Extracción de datos con OpenAI Vision
+│   ├── database.py   # Consultas y persistencia en Firestore
+│   ├── validator.py  # Reglas de negocio y validación de importes
+│   ├── models.py     # Modelos de datos (Pydantic)
+│   ├── config.py     # Gestión de configuración y secretos
+│   └── excel.py      # Lógica de generación de reportes XLSX
+├── main.py           # Servidor FastAPI para Webhooks
+├── cloudbuild.yaml   # Configuración de CI/CD para Google Cloud
+├── Dockerfile        # Definición de la imagen de producción
+├── docker-compose.yml # Entorno de desarrollo local
 └── .env.example      # Plantilla de configuración
 ```
 
