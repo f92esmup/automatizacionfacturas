@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     # --- CONFIGURACIÓN HARDCODED (Valores por defecto del proyecto) ---
     master_admin_id: int = Field(default=6901550600, alias="MASTER_ADMIN_ID")
     authorized_users: str = Field(default="6901550600", alias="AUTHORIZED_USERS")
-    openai_model: str = Field(default="gpt-5.4", alias="OPENAI_MODEL")
+    openai_model: str = Field(default="gpt-5.5", alias="OPENAI_MODEL")
     gcp_project_id: str = Field(default="mi-facturador-bot-01", alias="GCP_PROJECT_ID")
     gcs_bucket_name: str = Field(default="facturas-storage-mi-facturador-bot-01", alias="GCS_BUCKET_NAME")
 

@@ -64,8 +64,12 @@ def calcular_hash_imagen(filepath: str) -> str:
 async def cmd_start(message: Message):
     await message.answer(
         "👋 Bienvenido al bot de Facturación Simplificado.\n\n"
-        "Envía una foto de tu factura para procesarla.\n"
-        "Usa /excel para descargar el reporte."
+        "📸 **Instrucciones y Opciones:**\n"
+        "• Envía una foto de tu factura para procesarla automáticamente.\n"
+        "• Usa /manual para introducir una factura a mano si no tienes foto.\n"
+        "• Usa /excel para descargar el reporte contable.\n\n"
+        "⚠️ **ATENCIÓN:** Una foto es una factura. Si una factura tiene más de una página, avisa a Pedro para SOPORTE.",
+        parse_mode="Markdown"
     )
 
 
