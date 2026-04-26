@@ -15,7 +15,12 @@ from google.cloud import storage
 from src.config import config
 from src.extractor import extract_invoice_data
 from src.validator import validate_invoice
-from src.database import insertar_factura, existe_hash_imagen, init_db
+from src.database import (
+    insertar_factura, 
+    existe_hash_imagen, 
+    init_db, 
+    obtener_cif_por_nombre_proveedor
+)
 from src.excel import obtener_excel_buffer
 
 logger = logging.getLogger(__name__)
@@ -55,14 +60,20 @@ async def cmd_excel(message: Message):
         return
 
     status_msg = await message.answer("🛠 Generando reporte...")
-    buffer = await asyncio.to_thread(obtener_excel_buffer)
+    
+    try:
+        buffer = await asyncio.to_thread(obtener_excel_buffer)
 
-    if buffer:
-        doc = BufferedInputFile(buffer.read(), filename="reporte_facturas.xlsx")
-        await message.answer_document(doc, caption="📊 Reporte contable.")
-        await status_msg.delete()
-    else:
-        await status_msg.edit_text("⚠️ No hay facturas registradas.")
+        if buffer:
+            doc = BufferedInputFile(buffer.read(), filename="reporte_facturas.xlsx")
+            await message.answer_document(doc, caption="📊 Reporte contable.")
+            await status_msg.delete()
+        else:
+            await status_msg.edit_text("⚠️ No hay facturas registradas.")
+            
+    except Exception as e:
+        logger.error(f"Error en comando /excel: {e}")
+        await status_msg.edit_text("❌ ALGO HA IDO MAL al generar el reporte. Por favor, intenta de nuevo más tarde.")
 
 
 @dp.message(F.photo)
@@ -100,6 +111,13 @@ async def handle_photo(message: Message):
         if not invoice:
             await reply_msg.edit_text("❌ No se pudo extraer información de la imagen.")
             return
+
+        # --- SUSTITUCIÓN SILENCIOSA DE CIF ---
+        # Si el proveedor ya existe en nuestra DB, usamos su CIF guardado para evitar discrepancias de la IA
+        cif_guardado = await asyncio.to_thread(obtener_cif_por_nombre_proveedor, invoice.proveedor_nombre)
+        if cif_guardado and cif_guardado != invoice.cif_proveedor:
+            logger.info(f"Sustitución silenciosa de CIF para {invoice.proveedor_nombre}: {invoice.cif_proveedor} -> {cif_guardado}")
+            invoice.cif_proveedor = cif_guardado
 
         # --- VALIDACIÓN Y CORRECCIÓN ---
         invoice, warnings = validate_invoice(invoice)

@@ -25,6 +25,22 @@ def existe_hash_imagen(hash_archivo: str) -> bool:
     docs = db.collection("facturas").where(filter=FieldFilter("hash_archivo", "==", hash_archivo)).limit(1).get()
     return len(list(docs)) > 0
 
+def obtener_cif_por_nombre_proveedor(nombre: str) -> Optional[str]:
+    """
+    Busca un proveedor por nombre en la colección 'proveedores' 
+    y retorna su CIF si existe.
+    """
+    if not nombre:
+        return None
+    
+    # Buscamos coincidencias exactas por el campo 'nombre'
+    docs = db.collection("proveedores").where(filter=FieldFilter("nombre", "==", nombre)).limit(1).get()
+    
+    for doc in docs:
+        return doc.get("cif_europeo")
+    
+    return None
+
 def insertar_factura(invoice: Invoice) -> str:
     """
     Inserta la factura en Firestore.
