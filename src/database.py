@@ -1,6 +1,7 @@
 import logging
 from typing import Optional, List
 from google.cloud import firestore
+from google.cloud.firestore_v1.base_query import FieldFilter
 from src.config import config
 from src.models import Invoice
 
@@ -21,7 +22,7 @@ def existe_hash_imagen(hash_archivo: str) -> bool:
     if not hash_archivo:
         return False
     
-    docs = db.collection("facturas").where("hash_archivo", "==", hash_archivo).limit(1).get()
+    docs = db.collection("facturas").where(filter=FieldFilter("hash_archivo", "==", hash_archivo)).limit(1).get()
     return len(list(docs)) > 0
 
 def insertar_factura(invoice: Invoice) -> str:

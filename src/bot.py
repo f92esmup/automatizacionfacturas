@@ -46,10 +46,12 @@ async def cmd_start(message: Message):
 
 @dp.message(Command("excel"))
 async def cmd_excel(message: Message):
+    logger.info(f"Comando /excel recibido del usuario: {message.from_user.id}")
     if (
         config.allowed_users_list
         and message.from_user.id not in config.allowed_users_list
     ):
+        logger.warning(f"Usuario {message.from_user.id} NO autorizado para /excel")
         return
 
     status_msg = await message.answer("🛠 Generando reporte...")
@@ -65,10 +67,13 @@ async def cmd_excel(message: Message):
 
 @dp.message(F.photo)
 async def handle_photo(message: Message):
+    logger.info(f"Foto recibida del usuario: {message.from_user.id}")
     if (
         config.allowed_users_list
         and message.from_user.id not in config.allowed_users_list
     ):
+        logger.warning(f"Usuario {message.from_user.id} NO autorizado para enviar fotos")
+        await message.answer("🚫 No tienes autorización para procesar facturas.")
         return
 
     photo = message.photo[-1]

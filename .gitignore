@@ -3,6 +3,8 @@ venv/
 env/
 .env
 env.yaml
+env_vars.yaml
+gcp-key.json
 temp_tickets/*.jpg
 temp_tickets/*.png
 temp_tickets/*.jpeg

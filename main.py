@@ -55,9 +55,24 @@ async def health_check(request: Request):
             base_url = base_url.replace("http://", "https://")
             
         webhook_url = f"{base_url}{config.webhook_path}"
-        logger.info(f"Autoconfigurando webhook en: {webhook_url}")
+        logger.info(f"Comprobando configuración de webhook: {webhook_url}")
         
         try:
+            # 1. Obtener información actual del webhook
+            current_webhook = await bot.get_webhook_info()
+            
+            # 2. Si ya es la misma, no hacemos nada y evitamos el Flood Control
+            if current_webhook.url == webhook_url:
+                logger.info("El webhook ya está correctamente configurado.")
+                return {
+                    "status": "ok", 
+                    "bot": "online", 
+                    "webhook_already_configured": True, 
+                    "webhook_url": webhook_url
+                }
+
+            # 3. Si es distinta, la actualizamos
+            logger.info(f"Actualizando webhook a: {webhook_url}")
             await bot.set_webhook(
                 url=webhook_url,
                 drop_pending_updates=True,
