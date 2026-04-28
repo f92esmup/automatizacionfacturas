@@ -27,6 +27,7 @@ from src.validator import validate_invoice
 from src.database import (
     insertar_factura, 
     existe_hash_imagen, 
+    existe_numero_factura,
     init_db, 
     obtener_cif_por_nombre_proveedor,
     obtener_todos_proveedores
@@ -265,6 +266,14 @@ async def process_manual_finish(message: Message, state: FSMContext):
         await state.clear()
         return
 
+    # --- SEGUNDA VERIFICACIÓN: NÚMERO DE FACTURA ---
+    cif = data.get("cif", "UNKNOWN")
+    numero_factura = data.get("numero_factura", "S/N")
+    if await asyncio.to_thread(existe_numero_factura, cif, numero_factura):
+        await message.answer(f"⚠️ Ya existe una factura registrada con el número `{numero_factura}` para este proveedor.", parse_mode="Markdown", reply_markup=ReplyKeyboardRemove())
+        await state.clear()
+        return
+
     try:
         invoice = Invoice(**data)
         res_id = await asyncio.to_thread(insertar_factura, invoice)
@@ -330,6 +339,13 @@ async def handle_photo(message: Message):
                 [f"- {w}" for w in warnings]
             )
             await message.answer(warn_text, parse_mode="Markdown")
+
+        # --- SEGUNDA VERIFICACIÓN: NÚMERO DE FACTURA ---
+        if await asyncio.to_thread(existe_numero_factura, invoice.cif_proveedor, invoice.numero_registro):
+            await reply_msg.edit_text(f"⚠️ Ya existe una factura registrada con el número `{invoice.numero_registro}` para el proveedor `{invoice.proveedor_nombre}`.", parse_mode="Markdown")
+            if filepath.exists():
+                filepath.unlink()
+            return
 
         invoice.hash_archivo = hash_img
         res_id = await asyncio.to_thread(insertar_factura, invoice)

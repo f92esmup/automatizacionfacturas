@@ -25,6 +25,21 @@ def existe_hash_imagen(hash_archivo: str) -> bool:
     docs = db.collection("facturas").where(filter=FieldFilter("hash_archivo", "==", hash_archivo)).limit(1).get()
     return len(list(docs)) > 0
 
+def existe_numero_factura(cif_proveedor: str, numero_registro: str) -> bool:
+    """
+    Verifica si ya existe una factura con el mismo CIF de proveedor y número de registro.
+    """
+    if not cif_proveedor or not numero_registro:
+        return False
+    
+    docs = db.collection("facturas").where(
+        filter=FieldFilter("cif_proveedor", "==", cif_proveedor)
+    ).where(
+        filter=FieldFilter("numero_registro", "==", numero_registro)
+    ).limit(1).get()
+    
+    return len(list(docs)) > 0
+
 def obtener_cif_por_nombre_proveedor(nombre: str) -> Optional[str]:
     """
     Busca un proveedor por nombre en la colección 'proveedores' 
