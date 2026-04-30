@@ -11,3 +11,6 @@ temp_tickets/*.jpeg
 donut_dataset
 # Datos de PostgreSQL (viven en el host pero no se versionan)
 data/
+.agents/
+AGENTS.md
+skills-lock.json

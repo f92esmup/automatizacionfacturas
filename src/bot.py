@@ -61,8 +61,16 @@ def calcular_hash_imagen(filepath: str) -> str:
     return h.hexdigest()
 
 
+def is_authorized(user_id: int) -> bool:
+    """Verifica si un usuario está en la lista de permitidos."""
+    return not config.allowed_users_list or user_id in config.allowed_users_list
+
 @dp.message(CommandStart())
 async def cmd_start(message: Message):
+    if not is_authorized(message.from_user.id):
+        await message.answer("🚫 No tienes autorización para usar este bot.")
+        return
+
     await message.answer(
         "👋 Bienvenido al bot de Facturación Simplificado.\n\n"
         "📸 **Instrucciones y Opciones:**\n"
@@ -77,11 +85,9 @@ async def cmd_start(message: Message):
 @dp.message(Command("excel"))
 async def cmd_excel(message: Message):
     logger.info(f"Comando /excel recibido del usuario: {message.from_user.id}")
-    if (
-        config.allowed_users_list
-        and message.from_user.id not in config.allowed_users_list
-    ):
+    if not is_authorized(message.from_user.id):
         logger.warning(f"Usuario {message.from_user.id} NO autorizado para /excel")
+        await message.answer("🚫 No tienes autorización para descargar reportes.")
         return
 
     status_msg = await message.answer("🛠 Generando reporte...")
@@ -104,7 +110,9 @@ async def cmd_excel(message: Message):
 
 @dp.message(Command("manual"))
 async def cmd_manual(message: Message, state: FSMContext):
-    if config.allowed_users_list and message.from_user.id not in config.allowed_users_list:
+    if not is_authorized(message.from_user.id):
+        logger.warning(f"Usuario {message.from_user.id} NO autorizado para /manual")
+        await message.answer("🚫 No tienes autorización para introducir facturas manuales.")
         return
 
     await state.clear()
@@ -292,10 +300,7 @@ async def process_manual_finish(message: Message, state: FSMContext):
 @dp.message(F.photo)
 async def handle_photo(message: Message):
     logger.info(f"Foto recibida del usuario: {message.from_user.id}")
-    if (
-        config.allowed_users_list
-        and message.from_user.id not in config.allowed_users_list
-    ):
+    if not is_authorized(message.from_user.id):
         logger.warning(f"Usuario {message.from_user.id} NO autorizado para enviar fotos")
         await message.answer("🚫 No tienes autorización para procesar facturas.")
         return
