@@ -10,6 +10,8 @@ Actualmente, el proyecto se encuentra en fase de validación académica (Entrega
 La **Prueba de Concepto (PoC)** que demuestra la viabilidad del módulo de comprensión conversacional se encuentra aislada y documentada en el siguiente notebook:
 👉 `poc_clasificacion_intenciones.ipynb`
 
+> **Requisito de ejecución:** Para que el notebook funcione correctamente, es necesario que el archivo de datos `synthetic_dataset.csv` se encuentre en la ruta `data/synthetic_dataset.csv`. Este archivo se genera automáticamente mediante el script `generate_synthetic_data.py`.
+
 ### Tareas Pendientes (Próximos Pasos)
 - [ ] Integrar el modelo de la PoC (Clasificador SVM) dentro del flujo principal del bot.
 - [ ] Refactorizar la arquitectura del proyecto (actualmente `bot.py` ha crecido excesivamente y necesita modularización).

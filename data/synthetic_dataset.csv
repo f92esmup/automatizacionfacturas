@@ -1,321 +1,321 @@
 text,intent
-¿cuál es la última factura del proveedor ese de la cerveza?,CONSULTA_ULTIMA_FACTURA
-¿me puedes decir q factura es la más reciente de los de los vinos?,CONSULTA_ULTIMA_FACTURA
-"el de la cocacola, ¿cuándo me mandó la última factura?",CONSULTA_ULTIMA_FACTURA
-"¿y las de ayer, cuántas facturas llegaron?",CONSULTA_ULTIMA_FACTURA
-"la última factura del paco, ¿cuánto era?",CONSULTA_ULTIMA_FACTURA
-¿cuánto hemos gastado este mes en total?,CONSULTA_GASTO_TOTAL
-¿me puedes hacer un resumen de lo q hemos gastado en abril?,CONSULTA_GASTO_TOTAL
-¿cuánto me he dejado en el proveedor de los corderos este mes?,CONSULTA_GASTO_TOTAL
-¿cuánto en total con los de la cerveza?,CONSULTA_GASTO_TOTAL
-¿cuánto fue lo que pagué en febrero en total?,CONSULTA_GASTO_TOTAL
-"quiero ver las facturas que son de 500 euros, ¿puedes buscar?",CONSULTA_FACTURAS_POR_IMPORTE
-"busca las facturas de mil euros, porfa",CONSULTA_FACTURAS_POR_IMPORTE
-¿hay alguna factura por 200 euros?,CONSULTA_FACTURAS_POR_IMPORTE
-"dame las facturas que son por 300, a ver cuántas hay",CONSULTA_FACTURAS_POR_IMPORTE
-"busca las de los 600 que hemos pagado, xfa",CONSULTA_FACTURAS_POR_IMPORTE
-¿me puedes buscar la factura de la semana pasada por el número?,CONSULTA_FACTURA_POR_NUMERO
-"la factura que me pasaste, ¿cuál era el número?",CONSULTA_FACTURA_POR_NUMERO
-necesito el código de la factura del proveedor de las cervezas,CONSULTA_FACTURA_POR_NUMERO
-"dame el número de la factura de los de la carne, porfa",CONSULTA_FACTURA_POR_NUMERO
-"busca la factura 1234, a ver q dice",CONSULTA_FACTURA_POR_NUMERO
-¿cuánto se va a gastar con el paco en el próximo mes?,PREDICCION_GASTO_PROVEEDOR
+¿cuál es la última FACTURA del proveedor ese de la cerveza?,CONSULTA_ULTIMA_FACTURA
+¿me PUEDES decir q factura ES la más reciente de LOS de los VINOS?,CONSULTA_ULTIMA_FACTURA
+"El de la cocacola, ¿cuándo me mandó la ÚLTIMA FACTURA?",CONSULTA_ULTIMA_FACTURA
+"¿y las DE ayer, cuántas FACTURAS llegaron?",CONSULTA_ULTIMA_FACTURA
+"La última FACTURA del paco, ¿CUÁNTO era?",CONSULTA_ULTIMA_FACTURA
+¿cuánto HEMOS GASTADO este mes EN total?,CONSULTA_GASTO_TOTAL
+¿me puedes hacer un resumen de LO q hemos gastado en abril?,CONSULTA_GASTO_TOTAL
+¿cuánto ME HE dejado EN el proveedor de los corderos este mes?,CONSULTA_GASTO_TOTAL
+¿cuánto EN total con los de la cerveza?,CONSULTA_GASTO_TOTAL
+¿CUÁNTO fue LO que pagué en febrero en total?,CONSULTA_GASTO_TOTAL
+"Quiero ver las facturas que son de 500 EUROS, ¿puedes buscar?",CONSULTA_FACTURAS_POR_IMPORTE
+"Busca las facturas de mil euros, porfa",CONSULTA_FACTURAS_POR_IMPORTE
+¿HAY ALGUNA FACTURA POR 200 EUROS?,CONSULTA_FACTURAS_POR_IMPORTE
+"Dame las facturas que son por 300, a ver cuántas hay",CONSULTA_FACTURAS_POR_IMPORTE
+"Busca las de los 600 que hemos pagado, xfa",CONSULTA_FACTURAS_POR_IMPORTE
+¿ME puedes buscar la factura de la semana pasada por el número?,CONSULTA_FACTURA_POR_NUMERO
+"La factura que me pasaste, ¿cuál era el número?",CONSULTA_FACTURA_POR_NUMERO
+Necesito el código de LA factura del proveedor de LAS cervezas,CONSULTA_FACTURA_POR_NUMERO
+"Dame el número de la factura de los de la carne, porfa",CONSULTA_FACTURA_POR_NUMERO
+"Busca la factura 1234, a ver Q dice",CONSULTA_FACTURA_POR_NUMERO
+¿cuánto se va a gastar con EL paco en el próximo mes?,PREDICCION_GASTO_PROVEEDOR
 ¿cuánto voy a gastar este mes con el proveedor de la fruta?,PREDICCION_GASTO_PROVEEDOR
-¿me puedes decir cuánto se prevé gastar en el de las cervezas?,PREDICCION_GASTO_PROVEEDOR
-¿cuánto se espera gastar con el carnicero en el futuro?,PREDICCION_GASTO_PROVEEDOR
-¿cuánto más voy a pagar a los de los refrescos?,PREDICCION_GASTO_PROVEEDOR
-¿cuánto será el gasto total el mes que viene?,PREVISION_MENSUAL_AGREGADA
-¿qué previsión de gastos tenemos para el mes que viene?,PREVISION_MENSUAL_AGREGADA
-quiero saber cuánto vamos a gastar en total el próximo mes,PREVISION_MENSUAL_AGREGADA
-¿me puedes dar una idea de lo que vamos a gastar el mes que viene?,PREVISION_MENSUAL_AGREGADA
-¿cuánto se prevé gastarse el mes que viene en total?,PREVISION_MENSUAL_AGREGADA
-"¿hay algún gasto raro este mes, no?",DETECCION_ANOMALIAS_GASTO
-¿me dices si hemos gastado más de lo normal este mes?,DETECCION_ANOMALIAS_GASTO
-¿hay algún pico raro en el gasto este mes?,DETECCION_ANOMALIAS_GASTO
-¿hemos sobrepasado el gasto habitual este mes?,DETECCION_ANOMALIAS_GASTO
-¿hay algún gasto que no cuadra este mes?,DETECCION_ANOMALIAS_GASTO
-¿cómo han subido los precios de los de la fruta últimamente?,ANALISIS_TENDENCIA_PRECIOS
+¿me puedes decir cuánto se prevé gastar en el DE las cervezas?,PREDICCION_GASTO_PROVEEDOR
+¿cuánto se espera gastar con EL carnicero en el futuro?,PREDICCION_GASTO_PROVEEDOR
+¿CUÁNTO más voy a PAGAR a los DE los refrescos?,PREDICCION_GASTO_PROVEEDOR
+¿CUÁNTO SERÁ EL GASTO TOTAL EL MES QUE VIENE?,PREVISION_MENSUAL_AGREGADA
+¿QUÉ previsión de gastos tenemos para el mes que viene?,PREVISION_MENSUAL_AGREGADA
+Quiero saber cuánto vamos a gastar EN total el próximo mes,PREVISION_MENSUAL_AGREGADA
+¿me puedes DAR una IDEA DE lo que vamos a GASTAR el mes que VIENE?,PREVISION_MENSUAL_AGREGADA
+¿cuánto se PREVÉ gastarse el mes que viene en total?,PREVISION_MENSUAL_AGREGADA
+"¿HAY ALGÚN GASTO RARO ESTE MES, NO?",DETECCION_ANOMALIAS_GASTO
+¿ME dices si hemos gastado más de lo normal este mes?,DETECCION_ANOMALIAS_GASTO
+¿hay algún PICO RARO en EL gasto este mes?,DETECCION_ANOMALIAS_GASTO
+¿HEMOS sobrepasado el gasto habitual ESTE mes?,DETECCION_ANOMALIAS_GASTO
+¿hay algún gasto que no CUADRA este mes?,DETECCION_ANOMALIAS_GASTO
+¿CÓMO han SUBIDO los precios de los de la fruta últimamente?,ANALISIS_TENDENCIA_PRECIOS
 ¿ha subido el ticket medio en los últimos meses?,ANALISIS_TENDENCIA_PRECIOS
-¿los precios de los vinos han cambiado mucho este año?,ANALISIS_TENDENCIA_PRECIOS
-"¿cómo va el precio de los refrescos, ha subido?",ANALISIS_TENDENCIA_PRECIOS
-¿me puedes decir si el precio de la carne ha subido este mes?,ANALISIS_TENDENCIA_PRECIOS
-¿hay picos de gasto en verano con los proveedores?,ANALISIS_ESTACIONALIDAD
-"¿cuándo gastamos más, en fallas o en navidad?",ANALISIS_ESTACIONALIDAD
-¿hay alguna época en la que siempre gastamos más?,ANALISIS_ESTACIONALIDAD
-¿en pascua se nota el gasto en cervezas?,ANALISIS_ESTACIONALIDAD
-¿cuándo solemos gastar más con el paco?,ANALISIS_ESTACIONALIDAD
-dame un resumen de lo que he comprado con el proveedor de las cervezas,RESUMEN_HISTORICO_PROVEEDOR
-quiero ver un resumen del año con el carnicero,RESUMEN_HISTORICO_PROVEEDOR
-¿me puedes hacer un resumen de lo que he gastado con el paco?,RESUMEN_HISTORICO_PROVEEDOR
-¿cuántas veces hemos comprado a los de los refrescos este año?,RESUMEN_HISTORICO_PROVEEDOR
-¿cuánto he gastado en total con los de la fruta?,RESUMEN_HISTORICO_PROVEEDOR
+¿LOS PRECIOS DE LOS VINOS HAN CAMBIADO MUCHO ESTE AÑO?,ANALISIS_TENDENCIA_PRECIOS
+"¿cómo va el precio de LOS refrescos, ha subido?",ANALISIS_TENDENCIA_PRECIOS
+¿ME puedes decir si el precio de la carne ha subido ESTE MES?,ANALISIS_TENDENCIA_PRECIOS
+¿hay picos de gasto en VERANO con los proveedores?,ANALISIS_ESTACIONALIDAD
+"¿CUÁNDO GASTAMOS MÁS, EN FALLAS O EN NAVIDAD?",ANALISIS_ESTACIONALIDAD
+¿hay alguna ÉPOCA en la que siempre gastamos más?,ANALISIS_ESTACIONALIDAD
+¿en pascua se nota el gasto EN CERVEZAS?,ANALISIS_ESTACIONALIDAD
+¿cuándo solemos gastar MÁS con el paco?,ANALISIS_ESTACIONALIDAD
+Dame UN resumen de lo que he comprado con el proveedor de las CERVEZAS,RESUMEN_HISTORICO_PROVEEDOR
+Quiero ver un resumen del año con EL carnicero,RESUMEN_HISTORICO_PROVEEDOR
+¿me PUEDES hacer un resumen de lo que he GASTADO con el paco?,RESUMEN_HISTORICO_PROVEEDOR
+¿CUÁNTAS VECES HEMOS COMPRADO A LOS DE LOS REFRESCOS ESTE AÑO?,RESUMEN_HISTORICO_PROVEEDOR
+¿CUÁNTO HE GASTADO EN TOTAL CON LOS DE LA FRUTA?,RESUMEN_HISTORICO_PROVEEDOR
 ¿cuál es la última factura de la cervecera?,CONSULTA_ULTIMA_FACTURA
-dame la factura más reciente del de los corderos,CONSULTA_ULTIMA_FACTURA
-¿y la última factura del paco?,CONSULTA_ULTIMA_FACTURA
-quiero ver la factura nueva del provbedor de bebidas,CONSULTA_ULTIMA_FACTURA
-mira la última factura de los de la cocacola,CONSULTA_ULTIMA_FACTURA
-cual es la última del carnicero?,CONSULTA_ULTIMA_FACTURA
-tienes la última factura de la harina?,CONSULTA_ULTIMA_FACTURA
-cuando me llega la última factura del xiringuito?,CONSULTA_ULTIMA_FACTURA
-"la factura más reciente de los vinos, ¿cuál es?",CONSULTA_ULTIMA_FACTURA
-quiero ver la última de los del pescado,CONSULTA_ULTIMA_FACTURA
-¿cuánto he gastado en total este mes?,CONSULTA_GASTO_TOTAL
-cuant demane en total en enero?,CONSULTA_GASTO_TOTAL
-¿qué gasto total tengo con el provbedor de frutas?,CONSULTA_GASTO_TOTAL
-dame el total de gasto del mes pasado,CONSULTA_GASTO_TOTAL
-cuánto se ha ido en total a la cervecera?,CONSULTA_GASTO_TOTAL
+Dame la factura más reciente del de los corderos,CONSULTA_ULTIMA_FACTURA
+¿y la última factura del PACO?,CONSULTA_ULTIMA_FACTURA
+Quiero ver la factura nueva del provbedor de bebidas,CONSULTA_ULTIMA_FACTURA
+Mira la última factura de los de la COCACOLA,CONSULTA_ULTIMA_FACTURA
+CUAL es la última del carnicero?,CONSULTA_ULTIMA_FACTURA
+Tienes la última factura de la harina?,CONSULTA_ULTIMA_FACTURA
+Cuando me llega la última factura del xiringuito?,CONSULTA_ULTIMA_FACTURA
+"La FACTURA MÁS reciente de los vinos, ¿cuál es?",CONSULTA_ULTIMA_FACTURA
+QUIERO ver la última de LOS del pescado,CONSULTA_ULTIMA_FACTURA
+¿cuánto HE gastado en total este mes?,CONSULTA_GASTO_TOTAL
+Cuant demane en total en enero?,CONSULTA_GASTO_TOTAL
+¿qué gasto TOTAL tengo CON el PROVBEDOR de frutas?,CONSULTA_GASTO_TOTAL
+Dame el total de gasto del MES pasado,CONSULTA_GASTO_TOTAL
+Cuánto SE ha IDO en total a la CERVECERA?,CONSULTA_GASTO_TOTAL
 ¿y lo que hemos gastado en el verano?,CONSULTA_GASTO_TOTAL
-cuanto he gastado con el carnicero este año?,CONSULTA_GASTO_TOTAL
-¿cuánto me he dejado en el de los corderos?,CONSULTA_GASTO_TOTAL
-cuánto gasto en total en febrero?,CONSULTA_GASTO_TOTAL
-¿cuánto es lo que hemos gastado en total con el paco?,CONSULTA_GASTO_TOTAL
-hay facturas de 500 euros o algo así?,CONSULTA_FACTURAS_POR_IMPORTE
-quiero ver todas las facturas que sean por 300,CONSULTA_FACTURAS_POR_IMPORTE
-mira si hay alguna factura de mil,CONSULTA_FACTURAS_POR_IMPORTE
-¿tienes facturas de 250 euros?,CONSULTA_FACTURAS_POR_IMPORTE
-"busca las de 400 euros, porfa",CONSULTA_FACTURAS_POR_IMPORTE
-cuales son las facturas de 600?,CONSULTA_FACTURAS_POR_IMPORTE
-hay alguna factura por 1500 o más?,CONSULTA_FACTURAS_POR_IMPORTE
-dame las facturas que sean de 200,CONSULTA_FACTURAS_POR_IMPORTE
+CUANTO HE GASTADO CON EL CARNICERO ESTE AÑO?,CONSULTA_GASTO_TOTAL
+¿cuánto ME HE dejado en el DE los CORDEROS?,CONSULTA_GASTO_TOTAL
+Cuánto gasto en TOTAL en febrero?,CONSULTA_GASTO_TOTAL
+¿cuánto es lo que HEMOS gastado en total con el paco?,CONSULTA_GASTO_TOTAL
+Hay facturas de 500 euros o algo así?,CONSULTA_FACTURAS_POR_IMPORTE
+QUIERO ver todas las facturas que SEAN por 300,CONSULTA_FACTURAS_POR_IMPORTE
+Mira si hay alguna factura de mil,CONSULTA_FACTURAS_POR_IMPORTE
+¿tienes facturas de 250 EUROS?,CONSULTA_FACTURAS_POR_IMPORTE
+"BUSCA las de 400 euros, porfa",CONSULTA_FACTURAS_POR_IMPORTE
+Cuales son las facturas de 600?,CONSULTA_FACTURAS_POR_IMPORTE
+Hay alguna factura por 1500 o MÁS?,CONSULTA_FACTURAS_POR_IMPORTE
+DAME LAS facturas que sean de 200,CONSULTA_FACTURAS_POR_IMPORTE
 ¿cuantos pagos de 800 tenemos?,CONSULTA_FACTURAS_POR_IMPORTE
-"busca las facturas de 1000 euros, xfa",CONSULTA_FACTURAS_POR_IMPORTE
-¿qué factura es la 12345?,CONSULTA_FACTURA_POR_NUMERO
-dame info de la factura 67890,CONSULTA_FACTURA_POR_NUMERO
-mira la factura con código X100,CONSULTA_FACTURA_POR_NUMERO
-busca la factura que pone 54321,CONSULTA_FACTURA_POR_NUMERO
-"tengo la factura 333, ¿qué dice?",CONSULTA_FACTURA_POR_NUMERO
-quiero ver la factura 999,CONSULTA_FACTURA_POR_NUMERO
-¿y la factura 101?,CONSULTA_FACTURA_POR_NUMERO
-"la referencia de la factura 45678, ¿dónde está?",CONSULTA_FACTURA_POR_NUMERO
-quiero ver la 112233,CONSULTA_FACTURA_POR_NUMERO
+"Busca las facturas de 1000 euros, xfa",CONSULTA_FACTURAS_POR_IMPORTE
+¿QUÉ FACTURA ES LA 12345?,CONSULTA_FACTURA_POR_NUMERO
+DAME INFO de la factura 67890,CONSULTA_FACTURA_POR_NUMERO
+MIRA LA FACTURA CON CÓDIGO X100,CONSULTA_FACTURA_POR_NUMERO
+Busca la factura QUE pone 54321,CONSULTA_FACTURA_POR_NUMERO
+"TENGO la factura 333, ¿qué dice?",CONSULTA_FACTURA_POR_NUMERO
+Quiero VER la factura 999,CONSULTA_FACTURA_POR_NUMERO
+¿y LA factura 101?,CONSULTA_FACTURA_POR_NUMERO
+"La referencia de la factura 45678, ¿dónde está?",CONSULTA_FACTURA_POR_NUMERO
+Quiero ver la 112233,CONSULTA_FACTURA_POR_NUMERO
 ¿qué hay en la factura que empieza con 777?,CONSULTA_FACTURA_POR_NUMERO
-¿cuánto voy a gastar con el provbedor de cervezas este mes?,PREDICCION_GASTO_PROVEEDOR
-¿qué se espera gastar con el paco en abril?,PREDICCION_GASTO_PROVEEDOR
-cuánto me va a costar el de los corderos el mes que viene?,PREDICCION_GASTO_PROVEEDOR
+¿cuánto voy a gastar con EL provbedor de cervezas este mes?,PREDICCION_GASTO_PROVEEDOR
+¿qué se espera gastar CON EL PACO en abril?,PREDICCION_GASTO_PROVEEDOR
+Cuánto me va a costar el de los CORDEROS el mes que viene?,PREDICCION_GASTO_PROVEEDOR
 ¿previsió de gasto amb la fruitera?,PREDICCION_GASTO_PROVEEDOR
-"¿y con el de las verduras, cuánto?",PREDICCION_GASTO_PROVEEDOR
-cuánto puedo gastar en el de los vinos el mes que viene?,PREDICCION_GASTO_PROVEEDOR
+"¿y con el DE las verduras, cuánto?",PREDICCION_GASTO_PROVEEDOR
+Cuánto puedo gastar en el DE los vinos EL MES que viene?,PREDICCION_GASTO_PROVEEDOR
 ¿qué gasto se prevé con el del pescado?,PREDICCION_GASTO_PROVEEDOR
-mira a ver qué gasto con el carnicero el mes que viene,PREDICCION_GASTO_PROVEEDOR
+Mira a ver qué gasto con el CARNICERO el mes QUE viene,PREDICCION_GASTO_PROVEEDOR
 ¿cuánto crees que gastaré en el de las cervezas?,PREDICCION_GASTO_PROVEEDOR
-¿cuánto se espera con el provbedor de hielo?,PREDICCION_GASTO_PROVEEDOR
-¿qué previsión de gastos tengo para el mes que viene?,PREVISION_MENSUAL_AGREGADA
-cuánto voy a gastar el mes que viene en total?,PREVISION_MENSUAL_AGREGADA
+¿cuánto SE ESPERA con el provbedor de hielo?,PREDICCION_GASTO_PROVEEDOR
+¿qué previsión de gastos tengo para el mes que VIENE?,PREVISION_MENSUAL_AGREGADA
+Cuánto voy a gastar el MES que viene en total?,PREVISION_MENSUAL_AGREGADA
 ¿cuánto en total para el mes que viene?,PREVISION_MENSUAL_AGREGADA
-dame la previsión general de gastos para el próximo mes,PREVISION_MENSUAL_AGREGADA
-¿cuánto me voy a gastar en total en febrero?,PREVISION_MENSUAL_AGREGADA
-¿y la previsión de gasto para marzo?,PREVISION_MENSUAL_AGREGADA
-cuánto se espera en total para el mes que viene?,PREVISION_MENSUAL_AGREGADA
+Dame LA previsión GENERAL DE gastos para el próximo MES,PREVISION_MENSUAL_AGREGADA
+¿cuánto me voy a GASTAR en total en febrero?,PREVISION_MENSUAL_AGREGADA
+¿Y LA PREVISIÓN DE GASTO PARA MARZO?,PREVISION_MENSUAL_AGREGADA
+CUÁNTO SE ESPERA EN TOTAL PARA EL MES QUE VIENE?,PREVISION_MENSUAL_AGREGADA
 ¿cuanta pasta se va a ir el mes que viene?,PREVISION_MENSUAL_AGREGADA
-dame un resumen de lo que gastaré el siguiente mes,PREVISION_MENSUAL_AGREGADA
+Dame un RESUMEN DE LO que gastaré el siguiente mes,PREVISION_MENSUAL_AGREGADA
 ¿que tal va a ser el gasto para la proxima mes?,PREVISION_MENSUAL_AGREGADA
-"oye, ¿hay algún gasto raro este mes?",DETECCION_ANOMALIAS_GASTO
-hay algún pico de gasto este mes?,DETECCION_ANOMALIAS_GASTO
+"OYE, ¿hay algún gasto raro este MES?",DETECCION_ANOMALIAS_GASTO
+HAY algún pico de gasto este mes?,DETECCION_ANOMALIAS_GASTO
 ¿me he pasado de gasto este mes?,DETECCION_ANOMALIAS_GASTO
-mira si hay algo raro en los gastos de este mes,DETECCION_ANOMALIAS_GASTO
+Mira SI hay algo raro en los gastos de este mes,DETECCION_ANOMALIAS_GASTO
 ¿hay gastos inusuales en la cuenta?,DETECCION_ANOMALIAS_GASTO
 ¿este mes he tenido algún gasto raro?,DETECCION_ANOMALIAS_GASTO
-tienes algún gasto inesperado este mes?,DETECCION_ANOMALIAS_GASTO
+TIENES algún gasto inesperado este mes?,DETECCION_ANOMALIAS_GASTO
 ¿hay alguna anomalía en el gasto de este mes?,DETECCION_ANOMALIAS_GASTO
-¿he tenido algún gasto raro con el provbedor de frutas?,DETECCION_ANOMALIAS_GASTO
-mira a ver si hay un pico en mis gastos,DETECCION_ANOMALIAS_GASTO
-¿cómo ha ido subiendo el precio de las cervezas últimamente?,ANALISIS_TENDENCIA_PRECIOS
-¿ha subido el ticket medio últimamente?,ANALISIS_TENDENCIA_PRECIOS
-¿cómo ha variado el precio del pescado?,ANALISIS_TENDENCIA_PRECIOS
-¿los precios de las verduras han subido?,ANALISIS_TENDENCIA_PRECIOS
-quiero saber si los precios con el del vino han cambiado,ANALISIS_TENDENCIA_PRECIOS
-¿los precios de la carne siguen igual?,ANALISIS_TENDENCIA_PRECIOS
-¿ha aumentado el precio del hielo este año?,ANALISIS_TENDENCIA_PRECIOS
-mira la evolución de los precios de la fruta,ANALISIS_TENDENCIA_PRECIOS
-¿cómo han cambiado los precios de la cerveza?,ANALISIS_TENDENCIA_PRECIOS
-¿los precios han cambiado con el proveedor de refrescos?,ANALISIS_TENDENCIA_PRECIOS
-¿hay picos de gasto en verano?,ANALISIS_ESTACIONALIDAD
+¿he tenido algún gasto RARO con el provbedor de frutas?,DETECCION_ANOMALIAS_GASTO
+Mira a ver si hay UN pico en mis gastos,DETECCION_ANOMALIAS_GASTO
+¿cómo ha IDO SUBIENDO el precio de las cervezas últimamente?,ANALISIS_TENDENCIA_PRECIOS
+¿ha subido EL ticket medio últimamente?,ANALISIS_TENDENCIA_PRECIOS
+¿cómo HA variado el precio del pescado?,ANALISIS_TENDENCIA_PRECIOS
+¿los precios de las verduras han SUBIDO?,ANALISIS_TENDENCIA_PRECIOS
+Quiero saber si LOS precios CON EL del vino han cambiado,ANALISIS_TENDENCIA_PRECIOS
+¿los precios de la CARNE siguen igual?,ANALISIS_TENDENCIA_PRECIOS
+¿ha aumentado el precio DEL hielo este año?,ANALISIS_TENDENCIA_PRECIOS
+Mira la EVOLUCIÓN de LOS precios de la FRUTA,ANALISIS_TENDENCIA_PRECIOS
+¿CÓMO HAN CAMBIADO LOS PRECIOS DE LA CERVEZA?,ANALISIS_TENDENCIA_PRECIOS
+¿los precios han cambiado con el proveedor DE refrescos?,ANALISIS_TENDENCIA_PRECIOS
+¿HAY picos de gasto en verano?,ANALISIS_ESTACIONALIDAD
 "¿cuándo gastamos más, en pascua o en fallas?",ANALISIS_ESTACIONALIDAD
 "¿en verano los gastos se disparan, no?",ANALISIS_ESTACIONALIDAD
-"¿cuándo hay más facturas, en diciembre o en abril?",ANALISIS_ESTACIONALIDAD
-¿hay más gasto en invierno que en verano?,ANALISIS_ESTACIONALIDAD
-¿cuánto gastamos en fallas comparado con julio?,ANALISIS_ESTACIONALIDAD
-"¿picos de gasto en navidad, verdad?",ANALISIS_ESTACIONALIDAD
+"¿cuándo hay más facturas, en DICIEMBRE o en abril?",ANALISIS_ESTACIONALIDAD
+¿hay MÁS gasto en invierno QUE en verano?,ANALISIS_ESTACIONALIDAD
+¿cuánto gastamos EN fallas comparado con julio?,ANALISIS_ESTACIONALIDAD
+"¿PICOS DE gasto en navidad, verdad?",ANALISIS_ESTACIONALIDAD
 "¿cuándo se suele gastar más, en verano o en invierno?",ANALISIS_ESTACIONALIDAD
 ¿hay más gasto en agosto o en junio?,ANALISIS_ESTACIONALIDAD
 ¿cuando sube el gasto en el de los vinos?,ANALISIS_ESTACIONALIDAD
-dame un resumen de lo que he comprado al paco este año,RESUMEN_HISTORICO_PROVEEDOR
-¿cómo ha sido mi relación con el proveedor de cervezas?,RESUMEN_HISTORICO_PROVEEDOR
-mira mis compras con el carnicero desde enero,RESUMEN_HISTORICO_PROVEEDOR
-"resumen de gasto con el de los corderos, porfa",RESUMEN_HISTORICO_PROVEEDOR
-¿cuántas veces he comprado a la fruta este año?,RESUMEN_HISTORICO_PROVEEDOR
-¿qué tal ha estado el gasto con el de las verduras?,RESUMEN_HISTORICO_PROVEEDOR
-dame un resumen de lo que he gastado en cervezas el último año,RESUMEN_HISTORICO_PROVEEDOR
-¿frecuencia de compra con el paco este año?,RESUMEN_HISTORICO_PROVEEDOR
-cuántas veces he pillado a los de la cocacola?,RESUMEN_HISTORICO_PROVEEDOR
+Dame un resumen DE lo que he comprado al PACO este año,RESUMEN_HISTORICO_PROVEEDOR
+¿cómo ha sido mi relación con el PROVEEDOR de cervezas?,RESUMEN_HISTORICO_PROVEEDOR
+Mira mis COMPRAS con el carnicero desde enero,RESUMEN_HISTORICO_PROVEEDOR
+"Resumen de gasto con el de LOS corderos, PORFA",RESUMEN_HISTORICO_PROVEEDOR
+¿cuántas veces he comprado a LA fruta este año?,RESUMEN_HISTORICO_PROVEEDOR
+¿qué tal HA estado el gasto con el de las VERDURAS?,RESUMEN_HISTORICO_PROVEEDOR
+Dame un resumen de lo que he gastado EN cervezas EL ÚLTIMO año,RESUMEN_HISTORICO_PROVEEDOR
+¿frecuencia de compra con EL paco este AÑO?,RESUMEN_HISTORICO_PROVEEDOR
+Cuántas veces he pillado a los de la cocacola?,RESUMEN_HISTORICO_PROVEEDOR
 ¿como va mi gasto con el provbedor de hielo?,RESUMEN_HISTORICO_PROVEEDOR
-¿me puedes decir q factura es la última del carnicero?,CONSULTA_ULTIMA_FACTURA
-cuál es la última factura de la cocacola?,CONSULTA_ULTIMA_FACTURA
-"la d'ahir de el paco, q tal?",CONSULTA_ULTIMA_FACTURA
-"tengo curiosidad, ¿cuál fue la última factura de los de las cervezas?",CONSULTA_ULTIMA_FACTURA
-¿y la factura más reciente de los de la fruta?,CONSULTA_ULTIMA_FACTURA
-"la última factura del provbedor de pan, ¿dónde está?",CONSULTA_ULTIMA_FACTURA
-"dime la última del proveedor de pescado, porfa",CONSULTA_ULTIMA_FACTURA
-¿cuánto gaste en total el mes pasado con el paco?,CONSULTA_GASTO_TOTAL
-"cuanto me he gastado en todo este mes, xe?",CONSULTA_GASTO_TOTAL
-¿y el gasto total en el proveedor de las cervezas?,CONSULTA_GASTO_TOTAL
-cuanto gaste el mes pasado en el de la carne?,CONSULTA_GASTO_TOTAL
+¿me PUEDES decir q factura es LA última del carnicero?,CONSULTA_ULTIMA_FACTURA
+CUÁL es la última factura de la cocacola?,CONSULTA_ULTIMA_FACTURA
+"La D'AHIR de el paco, q tal?",CONSULTA_ULTIMA_FACTURA
+"Tengo curiosidad, ¿cuál fue la última factura de LOS de las cervezas?",CONSULTA_ULTIMA_FACTURA
+¿y la factura más reciente de los DE la fruta?,CONSULTA_ULTIMA_FACTURA
+"La última factura del provbedor de pan, ¿dónde ESTÁ?",CONSULTA_ULTIMA_FACTURA
+"Dime la última del proveedor de pescado, porfa",CONSULTA_ULTIMA_FACTURA
+¿cuánto gaste en TOTAL el MES PASADO CON el paco?,CONSULTA_GASTO_TOTAL
+"CUANTO ME HE GASTADO EN TODO ESTE MES, XE?",CONSULTA_GASTO_TOTAL
+¿y el gasto total en el proveedor DE las cervezas?,CONSULTA_GASTO_TOTAL
+Cuanto gaste el mes pasado en el de la CARNE?,CONSULTA_GASTO_TOTAL
 ¿me puedes dar el total que gastamos en el provbedor de frutas?,CONSULTA_GASTO_TOTAL
-cuant demane en total en todo el año?,CONSULTA_GASTO_TOTAL
-¿cuánto hemos gastado en el proveedor de refrescos?,CONSULTA_GASTO_TOTAL
-"busco facturas de 200 euros, ¿tienes?",CONSULTA_FACTURAS_POR_IMPORTE
-"mira a ver si hay facturas por 150, porfa",CONSULTA_FACTURAS_POR_IMPORTE
-tienes alguna factura de 100 euros del paco?,CONSULTA_FACTURAS_POR_IMPORTE
-"busca facturas de 300 euros, ¿puedes?",CONSULTA_FACTURAS_POR_IMPORTE
-hay alguna factura por un kilo de carne?,CONSULTA_FACTURAS_POR_IMPORTE
-"quiero ver las facturas de 50 euros, porfa",CONSULTA_FACTURAS_POR_IMPORTE
-¿tienes facturas de 75 euros de la cocacola?,CONSULTA_FACTURAS_POR_IMPORTE
-dame el número de la factura del mes pasado,CONSULTA_FACTURA_POR_NUMERO
-"busca la factura número 12345, porfa",CONSULTA_FACTURA_POR_NUMERO
-necesito la referencia de la factura del proveedor de cerveza,CONSULTA_FACTURA_POR_NUMERO
-mira a ver si tienes la factura 45678 de los de la fruta,CONSULTA_FACTURA_POR_NUMERO
+Cuant demane en total EN todo EL año?,CONSULTA_GASTO_TOTAL
+¿cuánto hemos GASTADO en el proveedor de refrescos?,CONSULTA_GASTO_TOTAL
+"Busco facturas de 200 euros, ¿tienes?",CONSULTA_FACTURAS_POR_IMPORTE
+"Mira a ver si hay facturas por 150, porfa",CONSULTA_FACTURAS_POR_IMPORTE
+Tienes alguna factura de 100 euros del paco?,CONSULTA_FACTURAS_POR_IMPORTE
+"BUSCA FACTURAS de 300 euros, ¿PUEDES?",CONSULTA_FACTURAS_POR_IMPORTE
+HAY alguna factura por un kilo de carne?,CONSULTA_FACTURAS_POR_IMPORTE
+"Quiero VER las facturas de 50 euros, porfa",CONSULTA_FACTURAS_POR_IMPORTE
+¿tienes facturas de 75 euros DE la cocacola?,CONSULTA_FACTURAS_POR_IMPORTE
+Dame el número de la factura del mes pasado,CONSULTA_FACTURA_POR_NUMERO
+"Busca la factura número 12345, porfa",CONSULTA_FACTURA_POR_NUMERO
+Necesito LA referencia de la factura del proveedor de cerveza,CONSULTA_FACTURA_POR_NUMERO
+Mira a ver si tienes la FACTURA 45678 de los de la fruta,CONSULTA_FACTURA_POR_NUMERO
 "¿cuál es la factura de la semana pasada, número?",CONSULTA_FACTURA_POR_NUMERO
-"la factura 23456 del paco, ¿dónde está?",CONSULTA_FACTURA_POR_NUMERO
-"dame la factura que me mandó el carnicero, número",CONSULTA_FACTURA_POR_NUMERO
-¿cuánto planeo gastar con el paco este mes?,PREDICCION_GASTO_PROVEEDOR
-¿me puedes decir lo que se prevé gastar con el proveedor de frutas?,PREDICCION_GASTO_PROVEEDOR
-cuanto creo que gastaré en el de las cervezas el mes que viene?,PREDICCION_GASTO_PROVEEDOR
-¿qué previsión de gasto tengo con el carnicero?,PREDICCION_GASTO_PROVEEDOR
-¿cuánto se espera gastar con los de la cocacola el próximo mes?,PREDICCION_GASTO_PROVEEDOR
-"¿y con el provbedor de pan, cuánto tendré que gastar?",PREDICCION_GASTO_PROVEEDOR
-¿cuánto más se gasta con el paco en el futuro?,PREDICCION_GASTO_PROVEEDOR
+"La factura 23456 del paco, ¿DÓNDE ESTÁ?",CONSULTA_FACTURA_POR_NUMERO
+"DAME LA FACTURA QUE ME MANDÓ EL CARNICERO, NÚMERO",CONSULTA_FACTURA_POR_NUMERO
+¿cuánto planeo gastar con EL paco este mes?,PREDICCION_GASTO_PROVEEDOR
+¿me PUEDES decir lo QUE se prevé gastar CON el proveedor de frutas?,PREDICCION_GASTO_PROVEEDOR
+Cuanto CREO que gastaré en el de las cervezas el mes que VIENE?,PREDICCION_GASTO_PROVEEDOR
+¿QUÉ previsión DE GASTO TENGO con el CARNICERO?,PREDICCION_GASTO_PROVEEDOR
+¿cuánto SE espera gastar con los de la cocacola EL PRÓXIMO mes?,PREDICCION_GASTO_PROVEEDOR
+"¿y con el provbedor de PAN, cuánto tendré QUE gastar?",PREDICCION_GASTO_PROVEEDOR
+¿cuánto más se gasta con el paco EN el futuro?,PREDICCION_GASTO_PROVEEDOR
 ¿y la previsión general de gastos para el próximo mes?,PREVISION_MENSUAL_AGREGADA
-¿qué se espera gastar en total para el mes que viene?,PREVISION_MENSUAL_AGREGADA
-¿me dices la previsión de gastos del mes que viene?,PREVISION_MENSUAL_AGREGADA
-cuánto se va a gastar en total el mes que viene?,PREVISION_MENSUAL_AGREGADA
-"dime la previsión mensual de gastos, porfa",PREVISION_MENSUAL_AGREGADA
+¿QUÉ se espera gastar en total para el mes que viene?,PREVISION_MENSUAL_AGREGADA
+¿me dices la previsión de gastos DEL mes que viene?,PREVISION_MENSUAL_AGREGADA
+CUÁNTO SE VA A GASTAR EN TOTAL EL MES QUE VIENE?,PREVISION_MENSUAL_AGREGADA
+"Dime la previsión mensual de gastos, PORFA",PREVISION_MENSUAL_AGREGADA
 ¿qué gasto total prevemos para el mes q viene?,PREVISION_MENSUAL_AGREGADA
-cuanto se va a gastar el mes que viene en total?,PREVISION_MENSUAL_AGREGADA
-"¿hay algún gasto raro este mes, o me he pasado?",DETECCION_ANOMALIAS_GASTO
-¿hay algún pico raro en los gastos de este mes?,DETECCION_ANOMALIAS_GASTO
-"mira si hay algún gasto raro este mes, xe",DETECCION_ANOMALIAS_GASTO
-"dame info si hay gastos anómalos, porfa",DETECCION_ANOMALIAS_GASTO
-¿he tenido un pico de gasto raro este mes?,DETECCION_ANOMALIAS_GASTO
-¿hay algo raro en los gastos de este mes?,DETECCION_ANOMALIAS_GASTO
-¿hay algún gasto que no cuadra este mes?,DETECCION_ANOMALIAS_GASTO
+Cuanto se va a gastar EL mes que viene en total?,PREVISION_MENSUAL_AGREGADA
+"¿hay ALGÚN gasto raro este MES, o me he pasado?",DETECCION_ANOMALIAS_GASTO
+¿hay algún pico raro EN los gastos de este mes?,DETECCION_ANOMALIAS_GASTO
+"Mira si hay algún gasto raro este mes, xe",DETECCION_ANOMALIAS_GASTO
+"DAME INFO SI HAY GASTOS ANÓMALOS, PORFA",DETECCION_ANOMALIAS_GASTO
+¿he TENIDO un pico de gasto raro este mes?,DETECCION_ANOMALIAS_GASTO
+¿hay algo raro en los gastos DE este mes?,DETECCION_ANOMALIAS_GASTO
+¿hay algún gasto QUE NO cuadra este mes?,DETECCION_ANOMALIAS_GASTO
 ¿cómo ha subido el precio de la carne este año?,ANALISIS_TENDENCIA_PRECIOS
 ¿el ticket medio ha subido o bajado?,ANALISIS_TENDENCIA_PRECIOS
-¿ha cambiado mucho el precio de la cerveza?,ANALISIS_TENDENCIA_PRECIOS
+¿HA cambiado mucho el precio de la cerveza?,ANALISIS_TENDENCIA_PRECIOS
 ¿cómo ha evolucionado el precio de los de la fruta?,ANALISIS_TENDENCIA_PRECIOS
-dime si el precio ha subido este año con el paco,ANALISIS_TENDENCIA_PRECIOS
-¿cómo van los precios del provbedor de pescado?,ANALISIS_TENDENCIA_PRECIOS
-"¿el precio de la cocacola ha cambiado, xe?",ANALISIS_TENDENCIA_PRECIOS
-¿hay picos históricos en los gastos de verano?,ANALISIS_ESTACIONALIDAD
-"dime si hay picos en fallas, porfa",ANALISIS_ESTACIONALIDAD
-"¿en pascua se gasta más, verdad?",ANALISIS_ESTACIONALIDAD
-"¿hay picos en los gastos de verano, xe?",ANALISIS_ESTACIONALIDAD
-¿cuando es cuando más gasto en el bar?,ANALISIS_ESTACIONALIDAD
-"¿hay algún mes donde se gaste más, como en navidad?",ANALISIS_ESTACIONALIDAD
-"en verano, ¿se nota un pico de gasto, no?",ANALISIS_ESTACIONALIDAD
+DIME si el precio ha subido este año CON EL paco,ANALISIS_TENDENCIA_PRECIOS
+¿CÓMO van los precios del provbedor DE pescado?,ANALISIS_TENDENCIA_PRECIOS
+"¿el precio de LA cocacola ha cambiado, xe?",ANALISIS_TENDENCIA_PRECIOS
+¿hay picos HISTÓRICOS EN los gastos DE verano?,ANALISIS_ESTACIONALIDAD
+"DIME SI HAY PICOS EN FALLAS, PORFA",ANALISIS_ESTACIONALIDAD
+"¿EN PASCUA SE GASTA MÁS, VERDAD?",ANALISIS_ESTACIONALIDAD
+"¿HAY picos en los gastos de verano, xe?",ANALISIS_ESTACIONALIDAD
+¿cuando es CUANDO más gasto en el bar?,ANALISIS_ESTACIONALIDAD
+"¿hay algún mes donde SE gaste más, COMO en navidad?",ANALISIS_ESTACIONALIDAD
+"EN verano, ¿SE nota un pico de gasto, no?",ANALISIS_ESTACIONALIDAD
 ¿me puedes hacer un resumen de lo que he comprado con el paco este año?,RESUMEN_HISTORICO_PROVEEDOR
-dame un resumen general de lo que he gastado con el proveedor de cervezas,RESUMEN_HISTORICO_PROVEEDOR
+DAME UN RESUMEN GENERAL DE LO QUE HE GASTADO CON EL PROVEEDOR DE CERVEZAS,RESUMEN_HISTORICO_PROVEEDOR
 ¿cómo ha sido mi relación con el de la fruta este año?,RESUMEN_HISTORICO_PROVEEDOR
-¿cuántas veces he comprado con el paco en el último año?,RESUMEN_HISTORICO_PROVEEDOR
-"un resumen de lo que gasto con el de la carne, porfa",RESUMEN_HISTORICO_PROVEEDOR
-dame info sobre lo que he comprado con el provbedor de pan,RESUMEN_HISTORICO_PROVEEDOR
-¿cuántas veces he pedido a la cocacola este año?,RESUMEN_HISTORICO_PROVEEDOR
-¿me puedes decir la ultima factura del proveedor de la cerveza?,CONSULTA_ULTIMA_FACTURA
-cuál es la última factura del paco,CONSULTA_ULTIMA_FACTURA
-q factura tengo de los de los corderos,CONSULTA_ULTIMA_FACTURA
-quiero ver la factura mas reciente de los de la cocacola,CONSULTA_ULTIMA_FACTURA
-¿y la de ayer de los del vino?,CONSULTA_ULTIMA_FACTURA
-dame la última de los de la carne,CONSULTA_ULTIMA_FACTURA
-"la factura del proveedor de las patatas, cual es la última?",CONSULTA_ULTIMA_FACTURA
-k factura tengo pendiente d los del pan?,CONSULTA_ULTIMA_FACTURA
-me urge ver la última factura d los del café,CONSULTA_ULTIMA_FACTURA
-¿qué hay de nuevo de los del pescado? Última factura?,CONSULTA_ULTIMA_FACTURA
-cuanto me he gastado en total este mes?,CONSULTA_GASTO_TOTAL
-cuanto gasto en el paco el mes pasado?,CONSULTA_GASTO_TOTAL
-q gasto total tengo con el proveedor de las cervezas?,CONSULTA_GASTO_TOTAL
-cuanto he gastado en el último trimestre?,CONSULTA_GASTO_TOTAL
-dime el gasto total con el proveedor de la carne en octubre,CONSULTA_GASTO_TOTAL
-cuanto me he dejado en total en diciembre?,CONSULTA_GASTO_TOTAL
-¿cuánto gaste en los de la lechuga?,CONSULTA_GASTO_TOTAL
-cuanto he gastado en los del vino este año?,CONSULTA_GASTO_TOTAL
-"cuánto gaste en los de los refrescos, sabes?",CONSULTA_GASTO_TOTAL
-q gasto total tengo con todos mis proveedores este mes?,CONSULTA_GASTO_TOTAL
-buscame facturas de 200 euros,CONSULTA_FACTURAS_POR_IMPORTE
-q facturas tengo de 150 a 200?,CONSULTA_FACTURAS_POR_IMPORTE
-cuál es la factura más cerca de 1000 euros?,CONSULTA_FACTURAS_POR_IMPORTE
-tengo facturas de 50 euros?,CONSULTA_FACTURAS_POR_IMPORTE
-"quiero ver las facturas de 300, porfa",CONSULTA_FACTURAS_POR_IMPORTE
-busca las de más de 500 euros,CONSULTA_FACTURAS_POR_IMPORTE
-hay alguna factura por 75 euros?,CONSULTA_FACTURAS_POR_IMPORTE
-muestrame las facturas que son de 250,CONSULTA_FACTURAS_POR_IMPORTE
-facturas que tengo de 600 a 700,CONSULTA_FACTURAS_POR_IMPORTE
-y si tengo alguna factura cercana a 800?,CONSULTA_FACTURAS_POR_IMPORTE
-"mira la factura que es el 12345, cual es?",CONSULTA_FACTURA_POR_NUMERO
-buscame la factura 678910,CONSULTA_FACTURA_POR_NUMERO
-q numero era la factura de la carne?,CONSULTA_FACTURA_POR_NUMERO
-quiero la factura con el código 001122,CONSULTA_FACTURA_POR_NUMERO
-"hay una factura que es la 333444, me la enseñas?",CONSULTA_FACTURA_POR_NUMERO
-me puedes buscar la 555?,CONSULTA_FACTURA_POR_NUMERO
-dame la factura que es el 987,CONSULTA_FACTURA_POR_NUMERO
-que factura tengo con el código 121314?,CONSULTA_FACTURA_POR_NUMERO
-busca la factura con número 161718,CONSULTA_FACTURA_POR_NUMERO
-cuál es la factura 2021-01?,CONSULTA_FACTURA_POR_NUMERO
-cuanto se espera que gaste con el paco este mes?,PREDICCION_GASTO_PROVEEDOR
-cuanto me voy a dejar en el proveedor de las cervezas?,PREDICCION_GASTO_PROVEEDOR
-cuanto voy a gastar con los del pescado el mes que viene?,PREDICCION_GASTO_PROVEEDOR
-¿y con el de las patatas cuanto se prevé?,PREDICCION_GASTO_PROVEEDOR
-"mano, cuanto se espera que gaste con el paco este trimestre?",PREDICCION_GASTO_PROVEEDOR
-"propongo que miremos lo que se gastará en los del vino, ¿sabes?",PREDICCION_GASTO_PROVEEDOR
-cuánto se prevé con el proveedor de la carne?,PREDICCION_GASTO_PROVEEDOR
-que gasto se estima para el mes q viene con los de cocacola?,PREDICCION_GASTO_PROVEEDOR
-cuanto gasto espero con los del café?,PREDICCION_GASTO_PROVEEDOR
-cuanto se va a gastar con el paco para navidad?,PREDICCION_GASTO_PROVEEDOR
-cuanto se va a gastar el mes que viene en total?,PREVISION_MENSUAL_AGREGADA
-que previsión hay para el mes que viene?,PREVISION_MENSUAL_AGREGADA
-cuanto gasto voy a tener el mes que viene?,PREVISION_MENSUAL_AGREGADA
-cuanto se gasta en total el próximo mes con todos?,PREVISION_MENSUAL_AGREGADA
-dime que gasto total tengo el mes que viene,PREVISION_MENSUAL_AGREGADA
+¿cuántas VECES he comprado con el paco en el último año?,RESUMEN_HISTORICO_PROVEEDOR
+"Un resumen de lo que GASTO con el DE la carne, porfa",RESUMEN_HISTORICO_PROVEEDOR
+Dame info sobre lo que he comprado con el provbedor DE pan,RESUMEN_HISTORICO_PROVEEDOR
+¿cuántas veces he PEDIDO a la cocacola este año?,RESUMEN_HISTORICO_PROVEEDOR
+¿me puedes decir la ultima FACTURA del proveedor de la cerveza?,CONSULTA_ULTIMA_FACTURA
+Cuál ES la última factura DEL paco,CONSULTA_ULTIMA_FACTURA
+Q factura tengo DE LOS de LOS corderos,CONSULTA_ULTIMA_FACTURA
+QUIERO VER la factura mas reciente de los de la cocacola,CONSULTA_ULTIMA_FACTURA
+¿y la DE ayer de los del vino?,CONSULTA_ULTIMA_FACTURA
+DAME la última de los de la carne,CONSULTA_ULTIMA_FACTURA
+"La factura del proveedor de las patatas, cual es la última?",CONSULTA_ULTIMA_FACTURA
+K factura tengo PENDIENTE d los del pan?,CONSULTA_ULTIMA_FACTURA
+ME URGE VER LA ÚLTIMA FACTURA D LOS DEL CAFÉ,CONSULTA_ULTIMA_FACTURA
+¿qué hay de NUEVO de los del pescado? última FACTURA?,CONSULTA_ULTIMA_FACTURA
+CUANTO me he gastado en total este mes?,CONSULTA_GASTO_TOTAL
+Cuanto gasto en el paco el mes pasado?,CONSULTA_GASTO_TOTAL
+Q gasto total tengo con el proveedor de las CERVEZAS?,CONSULTA_GASTO_TOTAL
+Cuanto he gastado en el último trimestre?,CONSULTA_GASTO_TOTAL
+DIME EL GASTO TOTAL CON EL PROVEEDOR DE LA CARNE EN OCTUBRE,CONSULTA_GASTO_TOTAL
+Cuanto me HE dejado en total en diciembre?,CONSULTA_GASTO_TOTAL
+¿CUÁNTO GASTE EN LOS DE LA LECHUGA?,CONSULTA_GASTO_TOTAL
+Cuanto he gastado en los del vino ESTE año?,CONSULTA_GASTO_TOTAL
+"Cuánto gaste en LOS de los REFRESCOS, sabes?",CONSULTA_GASTO_TOTAL
+Q GASTO TOTAL TENGO CON TODOS MIS PROVEEDORES ESTE MES?,CONSULTA_GASTO_TOTAL
+Buscame FACTURAS de 200 EUROS,CONSULTA_FACTURAS_POR_IMPORTE
+Q facturas tengo DE 150 a 200?,CONSULTA_FACTURAS_POR_IMPORTE
+CUÁL ES LA FACTURA MÁS CERCA DE 1000 EUROS?,CONSULTA_FACTURAS_POR_IMPORTE
+Tengo facturas de 50 euros?,CONSULTA_FACTURAS_POR_IMPORTE
+"Quiero VER las FACTURAS de 300, porfa",CONSULTA_FACTURAS_POR_IMPORTE
+BUSCA LAS DE MÁS DE 500 EUROS,CONSULTA_FACTURAS_POR_IMPORTE
+Hay alguna FACTURA por 75 euros?,CONSULTA_FACTURAS_POR_IMPORTE
+Muestrame las facturas que son de 250,CONSULTA_FACTURAS_POR_IMPORTE
+Facturas QUE tengo de 600 a 700,CONSULTA_FACTURAS_POR_IMPORTE
+Y si tengo alguna FACTURA cercana a 800?,CONSULTA_FACTURAS_POR_IMPORTE
+"Mira la factura QUE es el 12345, cual es?",CONSULTA_FACTURA_POR_NUMERO
+Buscame la factura 678910,CONSULTA_FACTURA_POR_NUMERO
+Q numero ERA LA factura de la carne?,CONSULTA_FACTURA_POR_NUMERO
+QUIERO la factura con el código 001122,CONSULTA_FACTURA_POR_NUMERO
+"HAY UNA factura que es la 333444, me la enseñas?",CONSULTA_FACTURA_POR_NUMERO
+Me puedes BUSCAR la 555?,CONSULTA_FACTURA_POR_NUMERO
+Dame LA factura que es el 987,CONSULTA_FACTURA_POR_NUMERO
+Que factura tengo con el código 121314?,CONSULTA_FACTURA_POR_NUMERO
+BUSCA la factura con número 161718,CONSULTA_FACTURA_POR_NUMERO
+Cuál es la factura 2021-01?,CONSULTA_FACTURA_POR_NUMERO
+Cuanto SE espera que GASTE CON el paco este mes?,PREDICCION_GASTO_PROVEEDOR
+Cuanto me voy a dejar en el proveedor DE las CERVEZAS?,PREDICCION_GASTO_PROVEEDOR
+CUANTO VOY A GASTAR CON LOS DEL PESCADO EL MES QUE VIENE?,PREDICCION_GASTO_PROVEEDOR
+¿Y CON EL DE LAS PATATAS CUANTO SE PREVÉ?,PREDICCION_GASTO_PROVEEDOR
+"Mano, CUANTO se espera que gaste con el PACO este TRIMESTRE?",PREDICCION_GASTO_PROVEEDOR
+"PROPONGO que miremos lo que SE gastará en los del vino, ¿sabes?",PREDICCION_GASTO_PROVEEDOR
+CUÁNTO SE PREVÉ CON EL PROVEEDOR DE LA CARNE?,PREDICCION_GASTO_PROVEEDOR
+QUE gasto se estima para el mes q VIENE con los de cocacola?,PREDICCION_GASTO_PROVEEDOR
+CUANTO gasto espero con los DEL café?,PREDICCION_GASTO_PROVEEDOR
+Cuanto se va a GASTAR con el paco para navidad?,PREDICCION_GASTO_PROVEEDOR
+Cuanto se VA a gastar el mes que viene en total?,PREVISION_MENSUAL_AGREGADA
+QUE previsión hay para el mes QUE VIENE?,PREVISION_MENSUAL_AGREGADA
+CUANTO gasto voy a TENER el mes que viene?,PREVISION_MENSUAL_AGREGADA
+CUANTO SE GASTA EN TOTAL EL PRÓXIMO MES CON TODOS?,PREVISION_MENSUAL_AGREGADA
+Dime que gasto total tengo EL mes que viene,PREVISION_MENSUAL_AGREGADA
 ¿cuánto se prevé gastar en el bar para diciembre?,PREVISION_MENSUAL_AGREGADA
-cuanto voy a gastar con todos mis proveedores el mes q viene?,PREVISION_MENSUAL_AGREGADA
-que tal la previsión de gastos para enero?,PREVISION_MENSUAL_AGREGADA
-cuanto se espera que gaste en total el mes que viene?,PREVISION_MENSUAL_AGREGADA
-como va la previsión de gastos para el mes siguiente?,PREVISION_MENSUAL_AGREGADA
-hay algún gasto raro este mes?,DETECCION_ANOMALIAS_GASTO
-me avisas si hay picos de gasto raros?,DETECCION_ANOMALIAS_GASTO
-mirame si hay algo raro este mes en los gastos,DETECCION_ANOMALIAS_GASTO
-se ha disparado el gasto en algo este mes?,DETECCION_ANOMALIAS_GASTO
-hay alguna anomalia en los gastos del paco este mes?,DETECCION_ANOMALIAS_GASTO
-¿hay algo que se haya disparado en gastos?,DETECCION_ANOMALIAS_GASTO
-"como van los gastos, todo ok?",DETECCION_ANOMALIAS_GASTO
-me puedes mirar si excedí el gasto este mes?,DETECCION_ANOMALIAS_GASTO
-hay algún gasto que me asuste este mes?,DETECCION_ANOMALIAS_GASTO
-"esto me parece raro, revisa los gastos porfa",DETECCION_ANOMALIAS_GASTO
-como han subido los precios del paco en el último año?,ANALISIS_TENDENCIA_PRECIOS
-hay una tendencia en los precios de los de cervezas?,ANALISIS_TENDENCIA_PRECIOS
-¿los precios de los del vino han subido este mes?,ANALISIS_TENDENCIA_PRECIOS
-¿ha subido el ticket medio en los últimos meses?,ANALISIS_TENDENCIA_PRECIOS
-como ha evolucionado el precio de la carne este año?,ANALISIS_TENDENCIA_PRECIOS
-"los precios de los refrescos han cambiado?, ¿no?",ANALISIS_TENDENCIA_PRECIOS
-mira como ha ido el precio d los de la lechuga,ANALISIS_TENDENCIA_PRECIOS
-como se ha puesto el precio de la cocacola estos meses?,ANALISIS_TENDENCIA_PRECIOS
-"esos precios están raros, ¿no crees?",ANALISIS_TENDENCIA_PRECIOS
-¿hay alguna subida notable en los precios de los pescados?,ANALISIS_TENDENCIA_PRECIOS
-como van los picos de gasto en verano?,ANALISIS_ESTACIONALIDAD
-hay algo en pascua que suba el gasto?,ANALISIS_ESTACIONALIDAD
-"que pasa en fallas con los gastos?, hay picos?",ANALISIS_ESTACIONALIDAD
-mira si hay picos en navidad en el gasto,ANALISIS_ESTACIONALIDAD
-"en verano, como va el gasto?, se dispara?",ANALISIS_ESTACIONALIDAD
-hay estacionalidad en los gastos del proveedor de la carne?,ANALISIS_ESTACIONALIDAD
-mira como sube el gasto en fiestas,ANALISIS_ESTACIONALIDAD
-"cuando se dispara el gasto en recetas, sabes?",ANALISIS_ESTACIONALIDAD
+Cuanto voy A gastar con todos mis proveedores el mes Q viene?,PREVISION_MENSUAL_AGREGADA
+QUE tal la previsión de gastos para enero?,PREVISION_MENSUAL_AGREGADA
+Cuanto se espera QUE GASTE en total EL mes que viene?,PREVISION_MENSUAL_AGREGADA
+COMO VA LA PREVISIÓN DE GASTOS PARA EL MES SIGUIENTE?,PREVISION_MENSUAL_AGREGADA
+HAY algún gasto raro este MES?,DETECCION_ANOMALIAS_GASTO
+Me avisas si hay picos DE gasto RAROS?,DETECCION_ANOMALIAS_GASTO
+Mirame si hay ALGO raro ESTE mes en los gastos,DETECCION_ANOMALIAS_GASTO
+Se HA disparado el gasto en algo ESTE mes?,DETECCION_ANOMALIAS_GASTO
+Hay alguna anomalia EN los gastos del paco este mes?,DETECCION_ANOMALIAS_GASTO
+¿hay algo que se HAYA disparado en gastos?,DETECCION_ANOMALIAS_GASTO
+"Como van los gastos, TODO ok?",DETECCION_ANOMALIAS_GASTO
+Me puedes mirar si excedí el GASTO este mes?,DETECCION_ANOMALIAS_GASTO
+Hay algún gasto que me asuste este mes?,DETECCION_ANOMALIAS_GASTO
+"ESTO ME PARECE RARO, REVISA LOS GASTOS PORFA",DETECCION_ANOMALIAS_GASTO
+Como han subido los PRECIOS DEL paco en el último año?,ANALISIS_TENDENCIA_PRECIOS
+Hay una tendencia en LOS precios de los de cervezas?,ANALISIS_TENDENCIA_PRECIOS
+¿los precios DE los del vino han subido este mes?,ANALISIS_TENDENCIA_PRECIOS
+¿ha subido el ticket MEDIO EN los últimos meses?,ANALISIS_TENDENCIA_PRECIOS
+Como ha evolucionado el precio DE la carne este año?,ANALISIS_TENDENCIA_PRECIOS
+"Los precios de los refrescos han cambiado?, ¿no?",ANALISIS_TENDENCIA_PRECIOS
+Mira COMO ha ido el precio d los de la lechuga,ANALISIS_TENDENCIA_PRECIOS
+Como se ha PUESTO el precio de la cocacola estos meses?,ANALISIS_TENDENCIA_PRECIOS
+"Esos precios están RAROS, ¿no crees?",ANALISIS_TENDENCIA_PRECIOS
+¿hay alguna subida notable en LOS precios de los PESCADOS?,ANALISIS_TENDENCIA_PRECIOS
+Como VAN los picos de gasto en verano?,ANALISIS_ESTACIONALIDAD
+Hay algo en pascua que suba el gasto?,ANALISIS_ESTACIONALIDAD
+"QUE pasa en fallas con los gastos?, hay picos?",ANALISIS_ESTACIONALIDAD
+MIRA SI hay picos en navidad en el gasto,ANALISIS_ESTACIONALIDAD
+"En verano, como VA el gasto?, se dispara?",ANALISIS_ESTACIONALIDAD
+Hay estacionalidad EN los gastos del proveedor DE la carne?,ANALISIS_ESTACIONALIDAD
+Mira como sube EL gasto en fiestas,ANALISIS_ESTACIONALIDAD
+"Cuando se dispara el GASTO EN RECETAS, SABES?",ANALISIS_ESTACIONALIDAD
 ¿hay alguna estacionalidad que deba saber?,ANALISIS_ESTACIONALIDAD
-como va el gasto en verano comparado con invierno?,ANALISIS_ESTACIONALIDAD
-quiero un resumen del paco este año,RESUMEN_HISTORICO_PROVEEDOR
-como ha ido en compras con los de los corderos?,RESUMEN_HISTORICO_PROVEEDOR
-muestrame la frecuencia de compra de los del vino,RESUMEN_HISTORICO_PROVEEDOR
-dame el resumen de facturas del proveedor de las cervezas,RESUMEN_HISTORICO_PROVEEDOR
-como ha sido el gasto con los del pescado este año?,RESUMEN_HISTORICO_PROVEEDOR
-"un resumen de las compras de la carne, xfa",RESUMEN_HISTORICO_PROVEEDOR
-"frecuencia de compra de los del café, dame datos",RESUMEN_HISTORICO_PROVEEDOR
-que tal ha ido el año con los de las patatas?,RESUMEN_HISTORICO_PROVEEDOR
-resumeme lo del paco en el último año,RESUMEN_HISTORICO_PROVEEDOR
-como me ha ido con los proveedores este año?,RESUMEN_HISTORICO_PROVEEDOR
+Como va el gasto EN verano comparado con INVIERNO?,ANALISIS_ESTACIONALIDAD
+Quiero un resumen del paco este año,RESUMEN_HISTORICO_PROVEEDOR
+Como ha ido en compras con los de los corderos?,RESUMEN_HISTORICO_PROVEEDOR
+MUESTRAME la frecuencia de compra DE los del vino,RESUMEN_HISTORICO_PROVEEDOR
+Dame el resumen de facturas DEL proveedor DE las cervezas,RESUMEN_HISTORICO_PROVEEDOR
+COMO HA SIDO EL GASTO CON LOS DEL PESCADO ESTE AÑO?,RESUMEN_HISTORICO_PROVEEDOR
+"UN resumen DE las compras DE la carne, xfa",RESUMEN_HISTORICO_PROVEEDOR
+"Frecuencia de COMPRA de los del café, DAME datos",RESUMEN_HISTORICO_PROVEEDOR
+Que tal ha ido el año con LOS de LAS patatas?,RESUMEN_HISTORICO_PROVEEDOR
+Resumeme lo del paco en el último año,RESUMEN_HISTORICO_PROVEEDOR
+Como ME HA IDO CON los proveedores este año?,RESUMEN_HISTORICO_PROVEEDOR
