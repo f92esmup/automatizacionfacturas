@@ -1,10 +1,23 @@
-# 🧾 Bot de Automatización de Facturas (Telegram + GCP)
+# Bot de Automatización de Facturas (Telegram + GCP)
 
-Este es un bot de Telegram diseñado para automatizar la gestión de facturas y tickets. El bot recibe imágenes de facturas, extrae la información clave mediante IA, valida los datos y los almacena en una base de datos de **Google Cloud Firestore**, guardando además la imagen original en **Google Cloud Storage**.
+Este es un bot de Telegram diseñado para automatizar la gestión de facturas y tickets. El bot recibe imágenes de facturas, extrae la información clave mediante IA, valida los datos y los almacena en una base de datos de Google Cloud Firestore, guardando además la imagen original en Google Cloud Storage.
 
 ---
 
-## 🚀 Características Principales
+## Estado Actual y Prueba de Concepto (PoC)
+
+Actualmente, el proyecto se encuentra en fase de validación académica (Entrega 3 PLN). 
+La **Prueba de Concepto (PoC)** que demuestra la viabilidad del módulo de comprensión conversacional se encuentra aislada y documentada en el siguiente notebook:
+👉 `poc_clasificacion_intenciones.ipynb`
+
+### Tareas Pendientes (Próximos Pasos)
+- [ ] Integrar el modelo de la PoC (Clasificador SVM) dentro del flujo principal del bot.
+- [ ] Refactorizar la arquitectura del proyecto (actualmente `bot.py` ha crecido excesivamente y necesita modularización).
+- [ ] Delinear y parametrizar correctamente las consultas (SQL/NoSQL) a ejecutar según la intención detectada.
+
+---
+
+## Características Principales
 - **Extracción con OpenAI Vision:** Utiliza GPT-4o-mini para extraer proveedor, CIF, fecha, importes e impuestos de imágenes.
 - **Corrección Inteligente de Proveedores:** Si un proveedor ya está registrado, el bot utiliza automáticamente su CIF guardado para corregir posibles errores de lectura de la IA de forma silenciosa.
 - **Validación Robusta:** Comprueba automáticamente la coherencia matemática de los impuestos y que los tipos de IVA sean legales en España.
@@ -14,7 +27,7 @@ Este es un bot de Telegram diseñado para automatizar la gestión de facturas y 
 
 ---
 
-## 🛠️ Tecnologías y Arquitectura
+## Tecnologías y Arquitectura
 - **Lenguaje:** Python 3.12
 - **Framework Web:** [FastAPI](https://fastapi.tiangolo.com/) (Webhooks)
 - **Bot Library:** [Aiogram 3.x](https://docs.aiogram.dev/)
@@ -27,7 +40,7 @@ Este es un bot de Telegram diseñado para automatizar la gestión de facturas y 
 
 ---
 
-## 💻 Configuración Local
+## Configuración Local
 
 ### 1. Requisitos
 - Docker y Docker Compose.
@@ -47,9 +60,9 @@ docker-compose up --build
 
 ---
 
-## 🌍 Despliegue y CI/CD (Google Cloud)
+## Despliegue y CI/CD (Google Cloud)
 
-El proyecto está configurado para desplegarse automáticamente mediante un **Cloud Build Trigger**.
+El proyecto está configurado para desplegarse automáticamente mediante un Cloud Build Trigger.
 
 ### 1. Secretos (Secret Manager)
 El despliegue requiere que los siguientes secretos existan en Google Cloud Secret Manager:
@@ -65,7 +78,7 @@ Cada vez que se realiza un `git push origin main`:
 
 ---
 
-## 📂 Estructura del Proyecto
+## Estructura del Proyecto
 ```text
 ├── src/
 │   ├── bot.py        # Comandos de Telegram y lógica principal
@@ -82,7 +95,4 @@ Cada vez que se realiza un `git push origin main`:
 └── .env.example      # Plantilla de configuración
 ```
 
----
 
-## 📜 Licencia
-Este proyecto es privado. Todos los derechos reservados.
